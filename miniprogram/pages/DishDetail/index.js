@@ -1,4 +1,6 @@
 const app = getApp()
+const DishTools = require('../../utils/dish-tools.js')
+const tools = DishTools.create(wx, app)
 
 Page({
   data: {
@@ -18,6 +20,13 @@ Page({
       this.setData({ previewImageUrl: decodeURIComponent(options.imageUrl) })
     }
   },
+  previewPhoto() { return tools.preview(this.data.dish?.imageUrl || this.data.previewImageUrl) },
+  async toggleFavorite() {
+    try {
+      const value = await tools.favorite(this, this.data._id, [this.data.dish].filter(Boolean))
+      if (value !== undefined) this.setData({ 'dish.favorite': value })
+    } catch (e) { wx.showToast({ title: e.message || '收藏未保存', icon: 'none' }) }
+  },
 
   async onShow() {
     await this.getOpenId()
@@ -27,8 +36,8 @@ Page({
   // 获取openid
   async getOpenId() {
     try {
-      const res = await wx.cloud.callFunction({ name: 'getOpenId' })
-      const openid = res.result?.openid || ''
+      const { currentUser } = await app.loadUserInfo()
+      const openid = currentUser?._id || ''
       this.setData({ openid })
     } catch (e) {
       console.error('获取openid失败', e)
@@ -40,7 +49,7 @@ Page({
     if (!this.data._id) return
 
     try {
-      const res = await wx.cloud.callFunction({
+      const res = await app.callFunction({
         name: 'getCoupleData',
         data: {
           collection: app.globalData.collectionDishList,
@@ -53,6 +62,7 @@ Page({
       }
 
       const dish = res.result.data
+      await app.convertFileURLs([dish], ['imageUrl'])
       this.setData({
         dish,
         dateText: this.formatDate(dish.createTime),
@@ -107,7 +117,7 @@ Page({
       success: async (res) => {
         if (res.confirm) {
           try {
-            const result = await wx.cloud.callFunction({
+            const result = await app.callFunction({
               name: 'updateCoupleData',
               data: {
                 collection: app.globalData.collectionDishList,
@@ -123,7 +133,7 @@ Page({
             wx.showToast({ title: '已删除', icon: 'success' })
             setTimeout(() => {
               wx.navigateBack()
-            }, 1500)
+            }, 400)
           } catch (e) {
             console.error('删除失败', e)
             wx.showToast({ title: '删除失败', icon: 'none' })

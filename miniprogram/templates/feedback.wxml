@@ -1,0 +1,7 @@
+<view class="tb-feedback" wx:if="{{tbFeedbackVisible}}" aria-live="polite">
+  <view class="tb-feedback-dog-wrap {{tbFeedbackCelebrate ? 'celebrate' : 'greet'}}">
+    <view class="tb-feedback-confetti c1" wx:if="{{tbFeedbackCelebrate}}"/><view class="tb-feedback-confetti c2" wx:if="{{tbFeedbackCelebrate}}"/><view class="tb-feedback-confetti c3" wx:if="{{tbFeedbackCelebrate}}"/><view class="tb-feedback-confetti c4" wx:if="{{tbFeedbackCelebrate}}"/>
+    <image src="/images/tandem/dog-snack.png" mode="aspectFit" class="tb-feedback-dog"/>
+  </view>
+  <view class="tb-feedback-bubble"><text>{{tbFeedbackMessage}}</text></view>
+</view>

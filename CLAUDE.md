@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+> 当前分支为 TandemBite 伴食 2.3.1。以下是上游架构说明，涉及“必须绑定才能使用”、仅有四个集合、旧 TabBar 和“没有测试”的描述已过时。请以 `docs/TandemBite-开发说明.md` 为当前架构依据；本地检查命令为 `node --test tests/*.test.cjs`。厨房与账目新接口位于 `cloudfunctions/tandem/`，前端通过 `app.callFunction()` 适配旧页面。不得将金额账目接入旧通用更新接口。表单与餐单草稿按账号和厨房隔离，仅存在当前设备；照片草稿只能清理本程序拥有的 tandem-draft- 文件。2.3.1仅改前端：journal.wxss为奶油手账主题，ledger-ring用整数分绘图，页内条件反馈只在确认保存后消费内存消息，不新增云请求或持续绘制循环。
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## 项目概述

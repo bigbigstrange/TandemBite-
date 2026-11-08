@@ -15,7 +15,7 @@ Page({
 
   async loadOrder(id) {
     try {
-      const res = await wx.cloud.callFunction({
+      const res = await app.callFunction({
         name: 'getCoupleData',
         data: {
           collection: app.globalData.collectionOrderList,
@@ -48,8 +48,8 @@ Page({
 
   async getCreatorName(openid) {
     try {
-      const res = await wx.cloud.callFunction({ name: 'getOpenId' })
-      const myOpenid = res.result?.openid || ''
+      const { currentUser } = await app.loadUserInfo()
+      const myOpenid = currentUser?._id || ''
       if (openid === myOpenid) return '你'
       return app.getPartnerName(myOpenid)
     } catch (e) {
@@ -77,10 +77,11 @@ Page({
   // 再来一单
   reorder() {
     const dishIds = this.data.order.dishes.map(d => d._id).join(',')
-    wx.requestSubscribeMessage({
+    app.requestSubscribeMessage({
       tmplIds: app.globalData.notifyTmplIds,
       complete: () => {
-        wx.switchTab({
+        app.globalData.reorderDishIds = dishIds
+        wx.navigateTo({
           url: '/pages/Order/index',
           success: () => {
             app.globalData.reorderDishIds = dishIds
@@ -126,7 +127,7 @@ Page({
 
   // 保存照片到订单记录
   async saveFinishedPhoto(fileID) {
-    await wx.cloud.callFunction({
+    const res = await app.callFunction({
       name: 'updateCoupleData',
       data: {
         collection: app.globalData.collectionOrderList,
@@ -135,9 +136,10 @@ Page({
         data: { finishedPhoto: fileID }
       }
     })
+    if (!res.result?.success) throw new Error(res.result?.message || '保存照片失败')
 
     const urlMap = await app.getTempFileURLs([fileID])
-    this.setData({ 'order.finishedPhoto': urlMap[fileID] || fileID })
+    this.setData({ 'order.finishedPhoto': urlMap[fileID] || fileID, 'order._rawFinishedPhoto': fileID })
   },
 
   // 预览照片
@@ -165,16 +167,10 @@ Page({
         wx.showLoading({ title: '删除中...', mask: true })
 
         try {
-          // 删除云存储文件（使用原始 fileID）
-          const rawId = this.data.order._rawFinishedPhoto || this.data.order.finishedPhoto
-          if (rawId) {
-            await wx.cloud.deleteFile({
-              fileList: [rawId]
-            })
-          }
+          // 解绑后的副本可能引用同一张照片；只解除当前记录的引用。
 
           // 更新订单记录
-          await wx.cloud.callFunction({
+          const result = await app.callFunction({
             name: 'updateCoupleData',
             data: {
               collection: app.globalData.collectionOrderList,
@@ -183,8 +179,9 @@ Page({
               data: { finishedPhoto: '' }
             }
           })
+          if (!result.result?.success) throw new Error(result.result?.message || '删除照片失败')
 
-          this.setData({ 'order.finishedPhoto': '' })
+          this.setData({ 'order.finishedPhoto': '', 'order._rawFinishedPhoto': '' })
 
           wx.hideLoading()
           wx.showToast({ title: '已删除', icon: 'success' })
@@ -195,5 +192,17 @@ Page({
         }
       }
     })
+  },
+
+  async completeMeal() {
+    try {
+      await app.callFunction({ name: 'updateCoupleData', data: { collection: 'OrderList', docId: this.data.order._id, action: 'update', data: { completed: true } } })
+      this.setData({ 'order.completed': true })
+      wx.showToast({ title: '这一顿，辛苦啦', icon: 'success' })
+    } catch (e) { wx.showToast({ title: e.message, icon: 'none' }) }
+  },
+
+  recordExpense() {
+    wx.navigateTo({ url: '/pages/LedgerEdit/index?meal=true' })
   },
 })

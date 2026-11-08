@@ -22,6 +22,7 @@ exports.main = async (event, context) => {
     // 获取当前用户
     const userRes = await db.collection('User').doc(currentOpenid).get()
     const currentUser = userRes.data
+    if (currentUser?.pendingTransitionId || currentUser?.schemaVersion === 3) return { success: false, message: '请使用伴食2.1.0修改厨房名称' }
 
     if (!currentUser) {
       return { success: false, message: '用户不存在' }

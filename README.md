@@ -1,271 +1,179 @@
-# PairBite - 情侣小厨房
+# TandemBite 伴食
 
-一个为情侣设计的微信小程序，帮助两个人一起管理菜品、每日点菜、记录饮食生活。
+> 一个为两个人设计的微信小程序「情侣小厨房」：一起管理菜品、每天点菜、记录吃喝与生活收支。
+>
+> 本仓库是 [PairBite](https://github.com/630999Steven/PairBite) 的**二次开发分支**，当前版本 **2.3.1（奶油手账）**。基于微信云开发，零服务器、零运维，开箱即用。
 
-基于微信云开发，零服务器、零运维，开箱即用。部署后可邀请多对情侣共同使用，数据自动隔离。
+<p>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey" alt="License"></a>
+  <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/"><img src="https://img.shields.io/badge/platform-微信小程序-07C160" alt="Platform"></a>
+  <a href="README.en-US.md"><img src="https://img.shields.io/badge/lang-English-blue" alt="English"></a>
+</p>
 
 ## 功能概览
 
-- **伴侣绑定**：通过邀请码配对，数据自动双向同步
-- **菜品库管理**：添加/编辑菜品，支持分类、图片、描述
+**核心功能（继承自上游 PairBite）**
+
+- **伴侣绑定**：通过邀请码配对，绑定后双方数据自动同步
+- **菜品库管理**：添加 / 编辑菜品，支持分类、图片、描述与菜谱步骤
 - **每日点菜**：从菜品库选菜下单，支持备注，伴侣实时收到通知
-- **历史记录**：查看所有点菜历史，支持"再来一单"快速复用
-- **分类管理**：自定义菜品分类（荤菜/素菜/汤品/主食等），支持排序
-- **订阅通知**：点菜后自动向伴侣推送微信订阅消息
+- **历史记录**：查看全部点菜历史，支持「再来一单」快速复用
+- **分类管理**：自定义菜品分类（荤菜 / 素菜 / 汤品 / 主食等）并排序
+- **订阅通知**：点菜后向伴侣推送微信订阅消息
 - **厨房命名**：自定义小厨房名称，双方同步显示
 
-<p>
-  <img src="docs/images/c84c40c90154ea6fc2b2adffc075ce52.png" width="180" />
-  <img src="docs/images/ced1fa2bb3d78b4be40a7a57a82e0ed0.png" width="180" />
-  <img src="docs/images/7b068edcfe92965528ef43c1deda8aea.jpg" width="180" />
-  <img src="docs/images/6072e6da3beb9cac110266ec1c5d39bc.jpg" width="180" />
-</p>
-<p>
-  <img src="docs/images/ccd81f7db4ad334c1b7fb087730fe41d.jpg" width="180" />
-  <img src="docs/images/a8629d338411f06bd52ba37041055e21.jpg" width="180" />
-  <img src="docs/images/026c99529da996b13d8ee25a6ae43887.jpg" width="180" />
-  <img src="docs/images/0e23519901d16165b4380d1ac6e40f0e.jpg" width="180" />
-</p>
+**本分支新增（2.1 → 2.3.1）**
+
+- **奶油手账主题**：统一的主题变量、手账风表面与轻量动效，标题使用本地字体子集
+- **唯一厨房**：一个人的厨房也能用，绑定不再是使用前提；绑定合并、解绑复制都有事务保护
+- **生活账簿**：收入 / 支出记账、月度与自定义区间统计、分类占比、CSV 导出
+- **环形分类统计**：原生 2D 画布绘制的分类占比环，按整数分计算角度，零支出不生成占比
+- **小狗互动与页内反馈**：保存成功的轻量反馈，不阻塞交互、不接收指针事件
+- **表单草稿**：编辑中的表单与待选餐单自动暂存，意外退出后可恢复
+- **共同收藏与常做排序**：收藏在双方之间共享，常做菜品按点菜次数排序
+- **完整照片预览**：菜品照片等比缩放上传，列表与大图预览都保留完整画面
+- **性能优化**：首页 / 厨房 / 点菜 / 账本各合并为一次聚合请求，图片链接随响应返回
 
 ## 技术栈
 
 | 层 | 技术 | 说明 |
-|---|------|------|
-| 前端 | 微信小程序原生 | WXML + WXSS + JS |
-| UI | WeUI | 微信官方组件库 |
-| 后端 | 微信云函数 | Node.js + wx-server-sdk |
-| 数据库 | 微信云数据库 | NoSQL 文档数据库 |
-| 存储 | 微信云存储 | 菜品图片 |
-| 通知 | 微信订阅消息 | 点菜/新菜品通知 |
+|---|---|---|
+| 前端 | 微信小程序原生 | WXML + WXSS + JS，无新增前端运行依赖 |
+| UI | WeUI + 自绘组件 | 微信官方组件库，另有 `ledger-ring` 画布组件 |
+| 后端 | 微信云函数 | Node.js（Nodejs20.19）+ wx-server-sdk |
+| 数据库 | 微信云数据库 | NoSQL 文档数据库，按厨房 / `coupleId` 隔离 |
+| 存储 | 微信云存储 | 菜品照片 |
+| 通知 | 微信订阅消息 | 点菜 / 新菜品通知 |
 
-无任何第三方 API 依赖，完全运行在微信云开发生态内。
+无第三方 API 依赖，完整运行在微信云开发生态内。
 
-## 项目结构
+## 目录结构
 
 ```
-├── miniprogram/                # 小程序前端
-│   ├── app.js                  # 全局逻辑（用户管理、绑定守卫、云初始化）
-│   ├── app.json                # 页面路由与 TabBar 配置
-│   ├── app.wxss                # 全局样式
-│   ├── envList.js              # 云环境配置 ← 需要修改
+.
+├── miniprogram/                 # 小程序前端
+│   ├── app.js                   # 全局逻辑（用户、绑定守卫、云初始化、通知模板）
+│   ├── app.json                 # 页面路由与 TabBar（首页 / 厨房 / 账本 / 我的）
+│   ├── app.wxss                 # 全局主题变量与基础样式
+│   ├── envList.js               # 云环境配置 ← 需要修改
 │   ├── components/
-│   │   └── bind-guard/         # 绑定状态提醒组件
-│   └── pages/
-│       ├── MainPage/           # 首页（情侣卡片、今日点菜、快捷入口）
-│       ├── Order/              # 点菜页（分类选菜、购物车）
-│       ├── Dishes/             # 菜品库浏览
-│       ├── DishAdd/            # 添加/编辑菜品
-│       ├── DishDetail/         # 菜品详情
-│       ├── OrderHistory/       # 历史记录
-│       ├── OrderDetail/        # 订单详情
-│       ├── Bind/               # 伴侣绑定
-│       ├── Settings/           # 个人设置
-│       └── CategoryManage/     # 分类管理
-├── cloudfunctions/             # 云函数（后端）
-│   ├── createUser/             # 用户注册/登录，生成邀请码
-│   ├── bindPartner/            # 伴侣配对绑定
-│   ├── unbindPartner/          # 解除绑定
-│   ├── getCoupleData/          # 查询伴侣共享数据
-│   ├── updateCoupleData/       # 更新/删除共享数据
-│   ├── manageCategory/         # 分类管理（增删改查 + 默认初始化）
-│   ├── updateKitchenName/      # 更新厨房名称
-│   ├── sendNotify/             # 发送订阅消息通知
-│   └── getOpenId/              # 获取用户 OpenID
-├── project.config.json         # 微信开发者工具配置 ← 需要修改
-└── LICENSE
+│   │   ├── bind-guard/          # 绑定状态提醒
+│   │   └── ledger-ring/         # 分类占比环形图（原生 2D 画布）
+│   ├── pages/                   # 14 个页面：MainPage、Kitchen、Order、Dishes、
+│   │                            #   DishAdd、DishDetail、RecipeEdit、Ledger、
+│   │                            #   LedgerEdit、OrderHistory、OrderDetail、
+│   │                            #   CategoryManage、Bind、Settings
+│   ├── styles/                  # 手账主题、统一表面与反馈样式
+│   ├── templates/               # 页内反馈模板
+│   ├── utils/                   # ledger、ring、drafts、feedback、dish-tools 等纯函数
+│   └── images/                  # 图标与插图（Lucide 本地 PNG）
+├── cloudfunctions/              # 11 个云函数
+│   ├── tandem/                  # 聚合接口（view / 业务写操作 / 事务）
+│   ├── createUser/              # 注册登录、生成邀请码
+│   ├── bindPartner/             # 伴侣绑定
+│   ├── unbindPartner/           # 解除绑定
+│   ├── getCoupleData/           # 查询共享数据
+│   ├── updateCoupleData/        # 更新 / 删除共享数据
+│   ├── manageCategory/          # 分类管理
+│   ├── updateKitchenName/       # 厨房命名
+│   ├── sendNotify/              # 订阅消息推送
+│   ├── getOpenId/               # 获取 OpenID
+│   └── getFileURL/              # 云文件 ID → 临时链接
+├── docs/                        # 使用说明、开发说明、验证记录与截图
+├── tests/                       # Node 自动化测试（5 个 .test.cjs）
+├── project.config.json          # 微信开发者工具配置 ← AppID 需要修改
+├── cloudbaserc.json             # CloudBase CLI 部署配置
+└── LICENSE                      # CC BY-NC-SA 4.0
 ```
 
-## 部署指南
+## 快速开始
 
 ### 前置条件
 
 - 安装 [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
-- 注册一个微信小程序账号（[个人号即可，类目选其他](https://mp.weixin.qq.com/wxopen/waregister?action=step1&source=mpregister&token=&lang=zh_CN)）
-- 在微信小程序后台首页，完成【小程序信息】和【小程序类目】的信息补充（小程序类目选 工具->备忘录 即可，并设置为主营类目）
+- 注册微信小程序账号（个人号即可），并在后台补全「小程序信息」与「小程序类目」（类目选 工具 → 备忘录）
 
-### 第一步：克隆项目
+### 1. 导入项目
 
-```bash
-git clone https://github.com/630999Steven/PairBite.git
-```
+用微信开发者工具「导入项目」选择本仓库根目录，填入你自己的小程序 **AppID**（会写入 `project.config.json` 的 `appid` 字段）。
 
-### 第二步：开通云开发
+### 2. 开通云开发并配置环境
 
-1. 注册号小程序账号后，去开发者后台获取你的小程序 AppID
-
-   ![image-20260426183947448](docs/images/image-20260426183947448.png)
-
-2. 用微信开发者工具打开项目
-
-   ![image-20260426184308726](docs/images/image-20260426184308726.png)
-
-3. 点击工具栏「云开发」按钮（不同版本的微信开发者工具，开通云开发的按钮位置有所不同）
-
-   ![image-20260426184749860](docs/images/image-20260426184749860.png)
-
-4. 按提示开通云开发环境（选免费基础版即可）
-
-5. 记下你的 **云环境 ID**（格式类似 `cloud1-xxxxxxxxxx`）
-
-   ![image-20260426184949404](docs/images/image-20260426184949404.png)
-
-### 第三步：添加数据集合
-
-在云开发平台，选择数据库，添加四个集合：
-
-1. **User**
-2. **DishList**
-3. **OrderList**
-4. **Category**
-
-![image-20260426203835555](docs/images/image-20260426203835555.png)
-
-### 第四步：修改配置
-
-回到项目，接下来需要修改两个文件：
-
-**project.config.json** — 替换成你的小程序 AppID：
-
-```json
-"appid": "你的小程序AppID"
-```
-
-> AppID 在 [微信公众平台](https://mp.weixin.qq.com/) → 开发管理 → 开发设置 中查看
-
-![image-20260426193206076](docs/images/image-20260426193206076.png)
-
-**miniprogram/envList.js** — 替换成你的云环境 ID：
+1. 工具栏点击「云开发」，按提示开通（免费基础版即可），记下云环境 ID（形如 `cloud1-xxxxxxxxxx`）
+2. 修改 `miniprogram/envList.js`：
 
 ```javascript
-const envList = [
-  {
-    "envId": "你的云环境ID",
-    "alias": "cloud"
-  }
-]
+const envList = [{ envId: '你的云环境ID', alias: 'cloud' }]
+module.exports = { envList }
 ```
 
-![image-20260426193349260](docs/images/image-20260426193349260.png)
+3. 如需用命令行部署云函数，同步修改 `cloudbaserc.json` 的 `envId`
 
-### 第五步：上传云函数
+### 3. 创建数据库集合
 
-在微信开发者工具中：
+在云开发控制台 → 数据库，创建 `User`、`DishList`、`OrderList`、`Category` 四个集合；
+2.1 起的唯一厨房与账本还会使用 `LedgerEntry`、`LedgerChange`、`KitchenTransition` 等集合，
+完整字段、权限与索引清单见 [docs/TandemBite-开发说明.md](docs/TandemBite-开发说明.md)。
 
-1. 选择环境
+### 4. 构建 npm 依赖
 
-   ![image-20260426202731252](docs/images/image-20260426202731252.png)
+微信开发者工具 → 工具 → 构建 npm（前端依赖 `weui-miniprogram` 已声明在 `miniprogram/package.json`）。
 
-2. 对 `cloudfunctions/` 中的云函数依次执行 → 「上传并部署：云端安装依赖（不上传node_modules）」
+### 5. 部署云函数
 
-共 10 个云函数需要部署：
+在 `cloudfunctions/` 下对每个函数执行「上传并部署：云端安装依赖（不上传 node_modules）」，共 11 个。
+也可用 CloudBase CLI 只部署聚合函数：
 
-| 云函数 | 功能 |
-|--------|------|
-| createUser | 用户注册/登录 |
-| bindPartner | 伴侣绑定 |
-| unbindPartner | 解除绑定 |
-| getCoupleData | 查询共享数据 |
-| updateCoupleData | 更新共享数据 |
-| manageCategory | 分类管理 |
-| updateKitchenName | 厨房命名 |
-| sendNotify | 消息通知 |
-| getOpenId | 获取 OpenID |
-| getFileURL | 图片临时链接转换 |
+```bash
+npx --yes --package=@cloudbase/cli@3.8.11 tcb fn deploy tandem --install-dependency true --force --json
+```
 
-### 第六步：配置订阅消息模板（可选）
+### 6. 配置订阅消息（可选）
 
-如果需要点菜通知功能：
+在微信公众平台 → 订阅消息 → 公共模板库挑选含「时间 / 任务名称 / 提醒内容 / 备注」字段的模板，
+把模板 ID 填入 `miniprogram/app.js` 的 `notifyTmplIds`。不配置不影响核心功能，只是收不到推送。
 
-1. 登录 [微信公众平台](https://mp.weixin.qq.com/) → 基础功能 → 订阅消息 → 公共模板库
+> 订阅消息的授权是给自己积攒接收额度，**双方都要授权**才能互相收到通知。
 
-   我这里使用【日程提醒】作为模板：
+### 7. 上传体验版
 
-   ![image-20260426200324596](docs/images/image-20260426200324596.png)
+工具栏「上传」提交为体验版，然后在公众平台 → 管理 → 成员管理中添加**体验成员**（个人号最多 15 人），
+对方扫码即可使用。多对情侣共用同一个小程序，数据通过 `coupleId` / `kitchenId` 隔离。
 
-2. 依次搜索并选择包含以下字段：时间、任务名称、提醒内容、备注，添加后提交
+## 测试
 
-   ![image-20260426200623299](docs/images/image-20260426200623299.png)
+```bash
+node --test tests/*.test.cjs
+```
 
-3. 回到【我的模板】，获取模板 ID 后，替换 `miniprogram/app.js` 中 `notifyTmplIds` 的值
+测试覆盖主题样式、账本与环形统计、性能与请求合并、交互反馈及端到端 smoke 流程，
+均为本地 Node 模拟，不能替代真机验收。真机验收项见
+[docs/TandemBite-本次验证记录.md](docs/TandemBite-本次验证记录.md)。
 
-> 不配置此步骤不影响核心功能使用，只是不会推送通知。收不到消息看下方「常见问题」
+## 文档
 
-**注意**：如果你和我的模板/字段不完全相同，需要去自行替换每个字段的DATA ID，这里不赘述。
+| 文档 | 内容 |
+|---|---|
+| [docs/TandemBite-手机使用与更新.md](docs/TandemBite-手机使用与更新.md) | 手机端日常使用、账本筛选、版本更新与两台手机验收 |
+| [docs/TandemBite-开发说明.md](docs/TandemBite-开发说明.md) | 架构、数据模型、账本事务、性能优化与部署边界 |
+| [docs/TandemBite-本次验证记录.md](docs/TandemBite-本次验证记录.md) | 各版本自动化检查与真机验收记录 |
+| [docs/images](docs/images) | 界面截图（含上游版本） |
 
-### 第七步：邀请体验成员（必做）
+## 已知限制
 
-小程序未正式上线前，其他用户需要被添加为**体验成员**才能访问：
+- **图片跨用户可见**：免费套餐无法把云存储权限设为「所有用户可读」，项目通过 `getFileURL` 转临时链接；
+  链接约 2 小时有效（前端 1.5 小时自动续期），长时间停留页面不刷新可能图片失效，刷新即可恢复。
+- **列表上限**：厨房与分类列表最多 100 项，超过需要补齐分页；账目明细已分页。
+- **不含**：OCR、支付账单导入、资金扣款、预算与账户余额。
+- **体验版限制**：需管理员上传并设为体验版；正式公开使用另需按微信要求提交审核。
 
-1. 登录 [微信公众平台](https://mp.weixin.qq.com/) → 管理 → 成员管理 → 体验成员
-2. 点击「添加」，输入对方的微信号
-3. 对方在微信中确认后，扫描体验版二维码即可使用
+## 许可与致谢
 
-> 个人号最多可添加 15 名体验成员，足够多对情侣一起使用。每对情侣的数据通过 coupleId 隔离，互不干扰。
+本项目沿用上游 [PairBite](https://github.com/630999Steven/PairBite) 的
+[CC BY-NC-SA 4.0](LICENSE) 协议：
 
-### 第八步：上传代码并部署小程序
+- 允许自由使用、修改和分享，**禁止商业用途**
+- 修改后的作品须以相同协议分享，并注明原作者
+- 原项目作者：[@630999Steven](https://github.com/630999Steven)
 
-1. 点击微信开发者工具右上角的「上传」将代码上传为体验版（版本号随意），**无需提交审核上架**。
-
-2. 管理 -> 版本管理里，选为体验版，之后扫描二维码即可进入小程序（上一步被添加为成员的人才能扫码使用）
-
-   ![image-20260426202128523](docs/images/image-20260426202128523.png)
-
-## 使用流程
-
-1. **用户 A** 打开小程序 → 设置头像昵称 → 进入「绑定」页面获取邀请码，给到用户B
-2. **用户 B** 打开小程序 → 设置头像昵称 → 输入 A 的邀请码完成绑定
-3. 绑定成功后双方共享菜品库，可以互相点菜、查看记录
-
-## 数据库说明
-
-| 集合 | 用途 | 数据隔离 |
-|------|------|---------|
-| User | 用户信息、绑定关系 | openid |
-| DishList | 菜品库 | coupleId |
-| OrderList | 点菜记录 | coupleId |
-| Category | 菜品分类 | coupleId |
-
-每对情侣通过 `coupleId` 隔离数据，多对情侣共用同一个小程序互不干扰。
-
-## 云开发免费额度
-
-| 资源 | 免费额度 |
-|------|---------|
-| 数据库存储 | 2 GB |
-| 数据库读次数 | 50 万次/天 |
-| 云存储容量 | 5 GB |
-| 云函数调用 | 40 万次/月 |
-
-情侣日常使用完全在免费额度内。
-
-## 常见问题
-
-**Q：必须要两个人才能用吗？**
-A：绑定伴侣后才能使用菜品和点菜功能。单人打开可以看到设置和绑定页面。
-
-**Q：如何换绑伴侣？**
-A：在设置页面解除绑定后，重新使用新的邀请码绑定即可。解绑后原有菜品和订单数据仍然保留在原 coupleId 下。
-
-**Q：云函数部署报错怎么办？**
-A：先在云函数目录下执行了 `npm install`，再上传部署。如果仍报错，检查 Node.js 版本是否 >= 12。
-
-**Q：订阅消息收不到？**
-A：微信订阅消息的授权是给**自己**积攒接收额度，而不是授权给对方发送。因此需要**双方都授权**才能互相收到通知。
-
-目前已在首页快捷入口、点菜提交、绑定成功、查看订单详情等多处埋点触发授权弹窗。建议在弹窗中勾选「总是保持以上选择」并点击允许，之后即可自动接收通知。
-
-**Q：对方看不到我上传的图片？**
-A：免费套餐下云存储权限无法改为"所有用户可读"，项目通过 `getFileURL` 云函数将 `cloud://` 文件 ID 转为临时链接来实现双方互看图片。该方案是对免费套餐限制的绕行手段，临时链接有效期约 2 小时（前端缓存 1.5 小时自动续期），长时间停留页面不刷新可能出现图片失效，刷新页面即可恢复。如果你已升级付费套餐，建议将云存储权限改为「所有用户可读」，并切换到 `premium-storage-version` 分支依赖官方使用更简洁可靠的实现。
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request。
-
-## License
-
-本项目采用 [CC BY-NC-SA 4.0](LICENSE) 协议开源。
-
-- 允许自由使用、修改和分享
-- **禁止商业用途**
-- 修改后的作品须以相同协议分享
-- 须注明原作者
+第三方素材：图标来自 [Lucide](docs/LUCIDE-LICENSE)（ISC），标题字体为站酷字体子集（[OFL](docs/ZCOOL-OFL.txt)）。

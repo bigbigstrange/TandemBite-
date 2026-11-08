@@ -1,144 +1,24 @@
-<!-- 页面加载中 -->
-<view class="page-loading" wx:if="{{pageLoading}}">
-  <view class="loading-content">
-    <image class="loading-image" src="/images/7b4bee27a7ccb84274ec7753e54c50c7.gif" mode="aspectFit"></image>
-    <view class="loading-dots-wrap">
-      <view class="loading-dot"></view>
-      <view class="loading-dot"></view>
-      <view class="loading-dot"></view>
-    </view>
+<view class="tb-page tb-unified tb-screen-MainPage">
+  <view class="tb-between home-date-row"><text class="tb-muted">{{todayText}}</text><button class="tb-chip" bindtap="goKitchen"><image class="tb-line-icon" src="/images/tandem/icons/house-primary.png" style="width:26rpx;height:26rpx" mode="aspectFit" aria-hidden="true"/> 幸福小屋</button></view>
+  <view class="tb-error" wx:if="{{error}}">{{error}}<button class="tb-text-btn" bindtap="onShow">点击重新加载</button></view>
+  <view class="tb-hero"><view><view class="tb-title"><view>好好吃饭，</view><view>也记住小日子。</view></view><view class="tb-muted home-subtitle">努力建造我们的幸福小屋 🏡🌷🐾</view></view><button class="home-dog" bindtap="greetDog" aria-label="和伴食小狗打招呼"><image class="tb-brand" src="/images/tandem/brand.jpg" mode="aspectFit"/></button></view>
+  <view class="home-shortcuts">
+    <button class="home-order" bindtap="goToOrder"><view><view class="home-order-title">去点菜</view><text class="home-order-desc">今晚想吃点什么？</text></view><view class="home-order-arrow">安排一顿热饭 <image class="tb-line-icon" src="/images/tandem/icons/arrow-up-right-primary.png" style="width:30rpx;height:30rpx" mode="aspectFit" aria-hidden="true"/></view></button>
+    <button class="home-shortcut" bindtap="addDish"><view class="home-shortcut-icon"><image class="tb-line-icon" src="/images/tandem/icons/cooking-pot-primary.png" style="width:37rpx;height:37rpx" mode="aspectFit" aria-hidden="true"/></view><view><text>添道菜</text><text class="home-shortcut-note">存下拿手的味道</text></view></button>
+    <button class="home-shortcut" bindtap="addEntry"><view class="home-shortcut-icon peach"><image class="tb-line-icon" src="/images/tandem/icons/notebook-pen-primary.png" style="width:37rpx;height:37rpx" mode="aspectFit" aria-hidden="true"/></view><view><text>记一笔</text><text class="home-shortcut-note">记住生活的小事</text></view></button>
   </view>
+  <block wx:if="{{ready}}">
+    <view class="tb-between tb-section"><text class="tb-heading">今天的餐桌</text><button class="tb-text-btn" bindtap="goToHistory">做饭记录 <image class="tb-line-icon" src="/images/tandem/icons/chevron-right-primary.png" style="width:26rpx;height:26rpx" mode="aspectFit" aria-hidden="true"/></button></view>
+    <view class="tb-card home-meal-card" wx:if="{{todayOrder}}" bindtap="goToTodayOrder">
+      <view class="tb-between"><view class="home-meal-photos"><image lazy-load wx:for="{{todayPreviewDishes}}" wx:key="_id" src="{{item.imageUrl || '/images/tandem/dish-placeholder.png'}}" mode="aspectFill"/></view><text class="home-status">{{todayOrder.completed ? '已完成' : '待开饭'}}</text></view>
+      <view class="home-meal-names"><text wx:for="{{todayPreviewDishes}}" wx:key="_id">{{index ? ' · ' : ''}}{{item.name}}</text><text wx:if="{{todayOrder.dishes.length > 3}}"> 等{{todayOrder.dishes.length}}道</text></view>
+      <view class="tb-muted">{{todayOrder.completed ? '这一顿，辛苦啦。' : '一荤一素也好，一碗热汤也好。'}}</view>
+    </view>
+    <view class="tb-card tb-meal-empty" wx:else bindtap="goToOrder"><image src="/images/tandem/dog-food.png" mode="aspectFit"/><view><view>从一道喜欢的菜开始</view><view class="tb-muted">今天想吃什么？去厨房看看 <image class="tb-line-icon" src="/images/tandem/icons/chevron-right-primary.png" style="width:24rpx;height:24rpx" mode="aspectFit" aria-hidden="true"/></view></view></view>
+    <view class="tb-card tb-mint home-budget" bindtap="goLedger"><view class="tb-between"><text class="tb-muted">这个月，生活花了</text><text class="tb-muted">{{month}}</text></view><view class="tb-big-money">¥ {{expenseText}}</view><view class="tb-between tb-summary-foot"><text>每一笔，都是认真生活。</text><text>查看账本 ↗</text></view></view>
+    <button class="tb-text-btn tb-full home-pair-link" bindtap="goToBind"><image class="tb-line-icon" src="/images/tandem/icons/heart-primary.png" style="width:27rpx;height:27rpx" mode="aspectFit" aria-hidden="true"/> {{isBound ? '今天也有好好照顾彼此' : '想一起吃饭时，再邀请一个人'}} <image class="tb-line-icon" src="/images/tandem/icons/chevron-right-primary.png" style="width:24rpx;height:24rpx" mode="aspectFit" aria-hidden="true"/></button>
+  </block>
+  <view class="tb-skeleton" wx:if="{{loading && !ready}}"><view/><view/><view/></view>
+  <view class="tb-caption" wx:if="{{loading}}">正在打开今天的小日子…</view>
 </view>
-
-<view class="container" wx:else>
-  <!-- 顶部区域：已绑定显示情侣卡片，未绑定显示欢迎卡片 -->
-  <view class="welcome-section {{isBound ? 'couple-mode' : ''}}">
-    <!-- 未绑定：原欢迎卡片 -->
-    <view wx:if="{{!isBound}}" class="welcome-card">
-      <image class="avatar-image" src="{{userAvatar || 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'}}" mode="aspectFill" bindtap="goToSettings"></image>
-      <view class="welcome-text">
-        <text class="greeting">{{greeting}}，{{userName || '新朋友'}}！</text>
-        <text class="sub-greeting">今天想吃点什么呀？</text>
-      </view>
-    </view>
-    <!-- 已绑定：情侣卡片 -->
-    <view wx:else class="couple-header" bindtap="goToBind">
-      <view class="couple-greeting">{{greeting}}，一起吃点什么？</view>
-      <view class="couple-avatars-top">
-        <view class="couple-avatar-item" catchtap="goToSettings">
-          <image class="couple-avatar-img" src="{{userAvatar}}" mode="aspectFill"></image>
-          <text class="couple-avatar-name">{{userName}}</text>
-        </view>
-        <view class="couple-heart-center">
-          <view class="couple-heart-beat">🍔</view>
-          <text class="couple-days" wx:if="{{bindDays > 0}}">{{bindDays}}天</text>
-        </view>
-        <view class="couple-avatar-item">
-          <image class="couple-avatar-img" src="{{partnerAvatar}}" mode="aspectFill"></image>
-          <text class="couple-avatar-name">{{partnerName}}</text>
-        </view>
-      </view>
-    </view>
-  </view>
-
-  <!-- profile 未完成提醒卡片 -->
-  <view wx:if="{{!profileComplete}}" class="bind-tip-section">
-    <view class="bind-tip-card profile-tip-card" bindtap="goToSetProfile">
-      <text class="bind-tip-icon">👤</text>
-      <view class="bind-tip-content">
-        <text class="bind-tip-title">还没有设置头像和昵称</text>
-        <text class="bind-tip-desc">点击设置，让伴侣认识你~</text>
-      </view>
-      <text class="bind-tip-arrow">></text>
-    </view>
-  </view>
-
-  <!-- 未绑定提示 -->
-  <view wx:if="{{!isBound}}" class="bind-tip-section">
-    <view class="bind-tip-card" bindtap="goToBind">
-      <text class="bind-tip-icon">💕</text>
-      <view class="bind-tip-content">
-        <text class="bind-tip-title">还没有绑定另一半</text>
-        <text class="bind-tip-desc">点击邀请TA一起使用小厨房</text>
-      </view>
-      <text class="bind-tip-arrow">></text>
-    </view>
-  </view>
-
-  <!-- 今日状态卡片 -->
-  <view class="status-section" wx:if="{{isBound}}">
-    <view class="section-title">🍽️ 今日点菜</view>
-    <view class="status-card" wx:if="{{todayOrder}}" bindtap="goToTodayOrder">
-      <view class="status-header">
-        <text class="status-label">{{todayOrder.creatorName}} 点了菜</text>
-        <text class="status-time">{{todayOrder.timeText}}</text>
-      </view>
-      <view class="status-dishes">
-        <view class="dish-tag" wx:for="{{todayOrder.dishes}}" wx:key="index">
-          {{item.name}}
-        </view>
-      </view>
-      <view class="photo-hint" wx:if="{{!todayOrder.finishedPhoto}}">
-        <text>📷 做好了记得拍一张~</text>
-      </view>
-    </view>
-    <view class="empty-card" wx:else>
-      <image class="empty-image" src="/images/bc5fd6af900184aaa9ebabeb236e76b0.gif" mode="aspectFit"></image>
-      <text class="empty-text">今天还没有点菜哦~</text>
-      <view class="btn-primary" bindtap="goToOrder">去点菜</view>
-    </view>
-  </view>
-
-
-  <!-- 快捷入口 -->
-  <view class="quick-section">
-    <view class="section-title">⚡ 快捷操作</view>
-    <view class="quick-grid">
-      <view class="quick-item" bindtap="goToSettings">
-        <view class="quick-icon" style="background: #E8F5E9;">👤</view>
-        <text class="quick-label">个人中心</text>
-      </view>
-      <view class="quick-item" bindtap="goToBind">
-        <view class="quick-icon" style="background: #E3F2FD;">💕</view>
-        <text class="quick-label">绑定关系</text>
-      </view>
-      <view class="quick-item" bindtap="goToCategoryManage">
-        <view class="quick-icon" style="background: #F3E5F5;">📂</view>
-        <text class="quick-label">类目管理</text>
-      </view>
-      <view class="quick-item" bindtap="goToRecentOrder">
-        <view class="quick-icon" style="background: #FFF3E0;">📋</view>
-        <text class="quick-label">最近点菜</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 菜品统计 -->
-  <view class="stats-section" wx:if="{{isBound}}">
-    <view class="section-title">📊 小厨房统计</view>
-    <view class="stats-card">
-      <view class="stat-item">
-        <text class="stat-number">{{dishCount}}</text>
-        <text class="stat-label">菜品总数</text>
-      </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-number">{{orderCount}}</text>
-        <text class="stat-label">点菜次数</text>
-      </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-number">{{togetherDays}}</text>
-        <text class="stat-label">一起吃饭</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 底部装饰 -->
-  <view class="footer-decoration">
-    <view class="footer-content">
-      <image class="footer-mascot" src="/images/4aa65830d0f97dad0cb40d992405e6cc-removebg-preview.png" mode="aspectFit"></image>
-      <text class="footer-text">帕恰狗祝你们用餐愉快 ~</text>
-    </view>
-  </view>
-</view>
+<include src="../../templates/feedback.wxml"/>

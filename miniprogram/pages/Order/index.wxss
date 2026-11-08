@@ -10,7 +10,7 @@
 /* 页面头部 */
 .page-header {
   padding: 30rpx 24rpx 20rpx;
-  background: linear-gradient(135deg, #6FCF97 0%, #B8E6C1 100%);
+  background: linear-gradient(135deg, #637556 0%, #E7EAD6 100%);
 }
 
 .page-title {
@@ -108,7 +108,7 @@
 
 .category-item.active {
   background: white;
-  border-left-color: #6FCF97;
+  border-left-color: #637556;
 }
 
 .category-icon {
@@ -123,7 +123,7 @@
 }
 
 .category-item.active .category-name {
-  color: #6FCF97;
+  color: #637556;
   font-weight: 500;
 }
 
@@ -137,7 +137,7 @@
   text-align: center;
   font-size: 20rpx;
   color: white;
-  background: #6FCF97;
+  background: #637556;
   border-radius: 16rpx;
   padding: 0 8rpx;
 }
@@ -214,7 +214,7 @@
 
 .dish-desc {
   font-size: 22rpx;
-  color: #6FCF97;
+  color: #637556;
   background: #F0F7E6;
   padding: 4rpx 12rpx;
   border-radius: 8rpx;
@@ -233,8 +233,8 @@
 }
 
 .dish-check.checked {
-  background: #6FCF97;
-  border-color: #6FCF97;
+  background: #637556;
+  border-color: #637556;
 }
 
 .list-bottom {
@@ -293,7 +293,7 @@
   text-align: center;
   font-size: 22rpx;
   color: white;
-  background: #6FCF97;
+  background: #637556;
   border-radius: 18rpx;
   padding: 0 8rpx;
 }
@@ -416,7 +416,7 @@
 
 .cart-item-desc {
   font-size: 24rpx;
-  color: #6FCF97;
+  color: #637556;
   background: #F0F7E6;
   padding: 4rpx 12rpx;
   border-radius: 8rpx;
@@ -444,7 +444,7 @@
   justify-content: center;
   min-width: 44rpx;
   height: 44rpx;
-  background: #6FCF97;
+  background: #637556;
   color: white;
   font-size: 26rpx;
   font-weight: 600;
@@ -463,7 +463,7 @@
 }
 
 .btn-order.active {
-  background: linear-gradient(135deg, #6FCF97 0%, #5AC476 100%);
+  background: linear-gradient(135deg, #637556 0%, #536447 100%);
 }
 
 /* 备注弹窗 */
@@ -521,7 +521,7 @@
 .remark-input {
   width: 100%;
   height: 160rpx;
-  background: #F5F9F0;
+  background: #FCF4E8;
   border-radius: 16rpx;
   padding: 20rpx;
   font-size: 28rpx;
@@ -558,7 +558,7 @@
   padding: 24rpx;
   font-size: 28rpx;
   color: white;
-  background: linear-gradient(135deg, #6FCF97 0%, #5AC476 100%);
+  background: linear-gradient(135deg, #637556 0%, #536447 100%);
   border-radius: 44rpx;
   font-weight: 500;
 }
@@ -610,7 +610,7 @@
 /* 通用按钮 */
 .btn-primary {
   padding: 22rpx 50rpx;
-  background: linear-gradient(135deg, #6FCF97 0%, #5AC476 100%);
+  background: linear-gradient(135deg, #637556 0%, #536447 100%);
   border-radius: 44rpx;
   font-size: 28rpx;
   color: white;
@@ -733,7 +733,7 @@
 }
 
 .btn-detail-toggle.add {
-  background: linear-gradient(135deg, #6FCF97 0%, #5AC476 100%);
+  background: linear-gradient(135deg, #637556 0%, #536447 100%);
   color: white;
 }
 
@@ -742,3 +742,9 @@
   border: 2rpx solid #E57373;
   color: #E57373;
 }
+/* 伴食：温馨概览后的竖向点菜，沿用左分类和右列表的滚动逻辑。 */
+.container{background:var(--bg-color);color:var(--text-primary);padding:0 25rpx;box-sizing:border-box;height:100vh;min-height:0}.page-header{background:transparent;padding:20rpx 0 12rpx;flex-shrink:0}.page-title{font-family:'TandemCheer','YouYuan',sans-serif;color:var(--text-primary);font-size:45rpx;font-weight:400;margin:0}.page-subtitle{color:var(--text-secondary);font-size:24rpx}.menu-mascot{width:90rpx;height:90rpx}.search-box{background:var(--card-bg);border:1rpx solid var(--border-color);border-radius:26rpx;padding:13rpx 20rpx;margin-top:8rpx}.menu-container{gap:20rpx;padding:8rpx 0 calc(135rpx + env(safe-area-inset-bottom));min-height:0;box-sizing:border-box}.category-list{width:132rpx;flex-shrink:0;background:#F2EBDD;border:1rpx solid #E9DDCA;border-radius:28rpx;box-sizing:border-box;overflow:hidden}.category-item{box-sizing:border-box;padding:23rpx 4rpx;margin:10rpx 8rpx;border:1rpx solid transparent;border-radius:22rpx;color:#7E6C59;min-height:112rpx;transition:background .2s ease}.category-icon{font-size:32rpx;line-height:40rpx;margin-bottom:9rpx}.category-item.active{background:#E7EAD6;border-color:#C4CEB2;color:#536447}.category-name{font-size:24rpx;line-height:1.45;color:inherit;max-width:100%;word-break:break-all}.category-count{background:var(--primary-color)}.dish-list{flex:1;width:0;min-height:0;box-sizing:border-box;background:#FFFDF7;border:1rpx solid #E9DDCA;border-radius:28rpx;overflow:hidden;position:relative;z-index:0}
+/* 吸顶标题必须遮住下层图片；跳转与测量锚点放在未吸顶的分类容器上。 */
+.dish-category{padding-bottom:8rpx}
+.category-header{position:sticky;top:0;z-index:2;box-sizing:border-box;min-height:72rpx;background:#FCF4E8;color:#536447;padding:17rpx 20rpx;margin-bottom:12rpx;border-bottom:1rpx solid #E9DDCA;font-size:26rpx;line-height:1.4}
+.category-header-name{color:#536447;font-weight:600;line-height:1.4}.category-header-icon{display:none}.dish-item{display:flex;align-items:center;gap:15rpx;margin:0 12rpx 12rpx;padding:18rpx 12rpx;border-radius:22rpx;background:#FFFDF7;border:1rpx solid #EEE6D9;min-height:166rpx;box-sizing:border-box;transition:background .18s ease}.dish-item.selected{background:#e0eddf88;border-color:#b7cbb5}.dish-image{width:120rpx;height:126rpx;flex-shrink:0;border-radius:25rpx;margin:0;background:#f5e4d5}.dish-info{flex:1;min-width:0;padding:0}.dish-name{font-size:27rpx;color:var(--text-primary);font-weight:500;white-space:normal;word-break:break-all}.dish-meta{margin-top:7rpx}.dish-desc,.dish-count{font-size:22rpx;color:var(--text-secondary)}.dish-check{height:59rpx;width:59rpx;min-width:59rpx;border:0;background:var(--primary-light);color:var(--primary-dark);border-radius:21rpx;margin:0;align-self:flex-end;display:flex;align-items:center;justify-content:center;font-size:31rpx;transition:background .18s ease,transform .18s ease}.dish-check:not(.checked)::before{content:'+'}.dish-check.checked{background:var(--primary-color);color:var(--card-bg);animation:tb-pick .25s ease}.footer{left:25rpx;right:25rpx;bottom:calc(15rpx + env(safe-area-inset-bottom));border:0;border-radius:34rpx;background:var(--primary-color);box-shadow:none;padding:15rpx 23rpx;min-height:98rpx;box-sizing:border-box}.footer-cart{min-width:0;flex:1}.cart-icon-wrap{width:60rpx;height:60rpx;margin-right:10rpx}.cart-icon-img{font-size:42rpx;line-height:60rpx;width:auto;height:auto}.cart-hint{font-size:25rpx;color:var(--card-bg)}.cart-badge{background:var(--card-bg);color:var(--primary-color);font-size:20rpx}.btn-order,.btn-order.active{background:transparent;color:var(--card-bg);font-size:25rpx;padding:15rpx 4rpx;box-shadow:none;white-space:nowrap}.success-modal,.remark-modal,.cart-panel,.detail-panel{background:var(--bg-color)}

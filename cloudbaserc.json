@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.cloudbase.net/cli/cloudbaserc.schema.json",
+  "envId": "cloud1-d6gxpda4073d99c9b",
+  "functionRoot": "cloudfunctions",
+  "functions": [
+    { "name": "tandem", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 30, "memorySize": 256 },
+    { "name": "createUser", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 },
+    { "name": "bindPartner", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 },
+    { "name": "unbindPartner", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 },
+    { "name": "getCoupleData", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 },
+    { "name": "updateCoupleData", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 },
+    { "name": "manageCategory", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 },
+    { "name": "updateKitchenName", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 },
+    { "name": "sendNotify", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 },
+    { "name": "getOpenId", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 },
+    { "name": "getFileURL", "runtime": "Nodejs20.19", "handler": "index.main", "timeout": 3, "memorySize": 256 }
+  ]
+}

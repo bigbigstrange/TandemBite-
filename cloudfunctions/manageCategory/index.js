@@ -21,6 +21,7 @@ exports.main = async (event, context) => {
 
   try {
     const userRes = await db.collection('User').doc(currentOpenid).get()
+    if (userRes.data?.pendingTransitionId || userRes.data?.schemaVersion === 3) return { success: false, message: '厨房已升级，请使用伴食2.1.0体验版' }
     const coupleId = userRes.data?.coupleId
     if (!coupleId) {
       return { success: false, message: '未绑定伴侣' }

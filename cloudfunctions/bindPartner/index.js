@@ -30,6 +30,7 @@ exports.main = async (event, context) => {
     }
 
     const currentUser = currentUserRes.data
+    if (currentUser.pendingTransitionId || currentUser.schemaVersion === 3) return { success: false, message: '请使用伴食2.1.0绑定，以合并已有内容' }
 
     // 检查当前用户是否已绑定
     if (currentUser.bindStatus === 'bound' && currentUser.partnerId) {
@@ -46,6 +47,7 @@ exports.main = async (event, context) => {
     }
 
     const partner = partnerRes.data[0]
+    if (partner.pendingTransitionId || partner.schemaVersion === 3) return { success: false, message: '对方已升级，请使用伴食2.1.0绑定' }
 
     // 检查是否是自己的邀请码
     if (partner._id === currentOpenid) {

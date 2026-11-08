@@ -27,7 +27,7 @@ Page({
   async loadCategories() {
     this.setData({ loading: true })
     try {
-      const res = await wx.cloud.callFunction({
+      const res = await app.callFunction({
         name: 'manageCategory',
         data: { action: 'list' }
       })
@@ -105,7 +105,7 @@ Page({
     try {
       if (editingIndex >= 0) {
         // 编辑
-        await wx.cloud.callFunction({
+        await app.callFunction({
           name: 'manageCategory',
           data: {
             action: 'update',
@@ -114,7 +114,7 @@ Page({
         })
       } else {
         // 新增
-        await wx.cloud.callFunction({
+        await app.callFunction({
           name: 'manageCategory',
           data: {
             action: 'add',
@@ -147,7 +147,7 @@ Page({
 
     try {
       // 查询该分类下菜品数量
-      const res = await wx.cloud.callFunction({
+      const res = await app.callFunction({
         name: 'manageCategory',
         data: { action: 'countDishes', data: { _id: cat._id } }
       })
@@ -163,7 +163,7 @@ Page({
           success: async (modalRes) => {
             if (!modalRes.confirm) return
             wx.showLoading({ title: '删除中...', mask: true })
-            await wx.cloud.callFunction({
+            await app.callFunction({
               name: 'manageCategory',
               data: { action: 'remove', data: { _id: cat._id } }
             })
@@ -206,7 +206,7 @@ Page({
     wx.showLoading({ title: '转移中...', mask: true })
 
     try {
-      await wx.cloud.callFunction({
+      await app.callFunction({
         name: 'manageCategory',
         data: {
           action: 'remove',
@@ -251,7 +251,7 @@ Page({
     const orders = this.data.categories.map((cat, i) => ({ _id: cat._id, sort: i }))
     wx.showLoading({ title: '保存中...', mask: true })
     try {
-      await wx.cloud.callFunction({
+      await app.callFunction({
         name: 'manageCategory',
         data: { action: 'reorder', data: { orders } }
       })

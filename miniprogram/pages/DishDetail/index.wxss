@@ -42,7 +42,7 @@
   display: flex;
   align-items: flex-start;
   padding: 20rpx 0;
-  border-bottom: 2rpx solid #F5F9F0;
+  border-bottom: 2rpx solid #FCF4E8;
 }
 
 .info-row:last-child {
@@ -76,7 +76,7 @@
 
 .btn-edit {
   padding: 28rpx;
-  background: linear-gradient(135deg, #6FCF97 0%, #5AC476 100%);
+  background: linear-gradient(135deg, #637556 0%, #536447 100%);
   border-radius: 50rpx;
   text-align: center;
 }
@@ -130,13 +130,13 @@
 
 .recipe-edit-chip {
   padding: 8rpx 20rpx;
-  background: #F5F9F0;
+  background: #FCF4E8;
   border-radius: 28rpx;
 }
 
 .recipe-edit-chip text {
   font-size: 24rpx;
-  color: #6FCF97;
+  color: #637556;
 }
 
 .recipe-meta {
@@ -144,7 +144,7 @@
   gap: 24rpx;
   margin-bottom: 24rpx;
   padding-bottom: 24rpx;
-  border-bottom: 2rpx solid #F5F9F0;
+  border-bottom: 2rpx solid #FCF4E8;
 }
 
 .meta-item {
@@ -212,7 +212,7 @@
 
 .empty-action {
   padding: 20rpx 72rpx;
-  background: linear-gradient(135deg, #6FCF97 0%, #5AC476 100%);
+  background: linear-gradient(135deg, #637556 0%, #536447 100%);
   border-radius: 50rpx;
   box-shadow: 0 4rpx 16rpx rgba(111, 207, 151, 0.25);
 }

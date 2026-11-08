@@ -17,10 +17,18 @@ exports.main = async (event, context) => {
     todayOnly = false
   } = event
 
+  if (!currentOpenid || !['DishList', 'OrderList'].includes(collection)) {
+    return { success: false, message: '不支持的查询' }
+  }
+  if (!Number.isInteger(limit) || limit < 1 || limit > 100 || !Number.isInteger(skip) || skip < 0) {
+    return { success: false, message: '分页参数不正确' }
+  }
+
   try {
     // 获取当前用户信息
     const userRes = await db.collection('User').doc(currentOpenid).get()
     const currentUser = userRes.data
+    if (currentUser?.pendingTransitionId || currentUser?.schemaVersion === 3) return { success: false, message: '厨房已升级，请使用伴食2.1.0体验版' }
 
     if (!currentUser) {
       return { success: false, message: '用户不存在' }

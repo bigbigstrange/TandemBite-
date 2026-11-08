@@ -1,4 +1,5 @@
-<view class="container">
+<view class="container tb-unified tb-screen-RecipeEdit">
+  <view class="tb-draft-banner" wx:if="{{draftMessage}}"><text>{{draftMessage}}</text><view class="tb-actions"><button wx:if="{{draftBlocked}}" class="tb-text-btn" bindtap="viewDraft">查看旧草稿</button><button class="tb-text-btn" bindtap="discardDraft">{{draftBlocked ? '放弃旧草稿' : '清除草稿'}}</button></view></view>
   <!-- 页面头部 -->
   <view class="page-header">
     <text class="page-title">{{dishName || '菜谱'}}</text>
@@ -10,11 +11,11 @@
     <!-- 食材 -->
     <view class="input-card">
       <view class="input-label">
-        <text class="label-icon">🥬</text>
+        <view class="label-icon"><image class="tb-line-icon" src="/images/tandem/icons/leaf-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
         <text class="label-text">食材</text>
         <text class="label-optional">（每行一项）</text>
       </view>
-      <textarea class="input-textarea" placeholder="例如：鸡蛋 2 个、番茄 1 个、生抽 1 勺（每行一项）"
+      <textarea disabled="{{draftBlocked || saving}}" class="input-textarea" placeholder="例如：鸡蛋 2 个、番茄 1 个、生抽 1 勺（每行一项）"
                 placeholder-class="input-placeholder"
                 style="height: {{ingredientsHeight}}rpx"
                 bindinput="onIngredientsInput" value="{{ingredients}}"
@@ -24,11 +25,11 @@
     <!-- 步骤 -->
     <view class="input-card">
       <view class="input-label">
-        <text class="label-icon">👩‍🍳</text>
+        <view class="label-icon"><image class="tb-line-icon" src="/images/tandem/icons/chef-hat-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
         <text class="label-text">做法</text>
         <text class="label-optional">（每行一步）</text>
       </view>
-      <textarea class="input-textarea" placeholder="例如：1. 番茄切块 2. 鸡蛋打散 3. 油锅炒蛋（每行一步）"
+      <textarea disabled="{{draftBlocked || saving}}" class="input-textarea" placeholder="例如：1. 番茄切块 2. 鸡蛋打散 3. 油锅炒蛋（每行一步）"
                 placeholder-class="input-placeholder"
                 style="height: {{stepsHeight}}rpx"
                 bindinput="onStepsInput" value="{{steps}}"
@@ -39,10 +40,10 @@
     <view class="input-row">
       <view class="input-card half">
         <view class="input-label">
-          <text class="label-icon">⏱</text>
+          <view class="label-icon"><image class="tb-line-icon" src="/images/tandem/icons/clock-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
           <text class="label-text">时长</text>
         </view>
-        <picker mode="selector" range="{{cookTimeOptions}}" range-key="label" value="{{cookTimeIndex}}" bindchange="onCookTimeChange">
+        <picker disabled="{{draftBlocked || saving}}" mode="selector" range="{{cookTimeOptions}}" range-key="label" value="{{cookTimeIndex}}" bindchange="onCookTimeChange">
           <view class="picker-value">
             <text>{{cookTime}}</text>
             <text class="picker-arrow">›</text>
@@ -52,10 +53,10 @@
 
       <view class="input-card half">
         <view class="input-label">
-          <text class="label-icon">🌶</text>
+          <view class="label-icon"><image class="tb-line-icon" src="/images/tandem/icons/flame-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
           <text class="label-text">难度</text>
         </view>
-        <picker mode="selector" range="{{difficultyOptions}}" value="{{difficultyIndex}}" bindchange="onDifficultyChange">
+        <picker disabled="{{draftBlocked || saving}}" mode="selector" range="{{difficultyOptions}}" value="{{difficultyIndex}}" bindchange="onDifficultyChange">
           <view class="picker-value">
             <text>{{difficulty}}</text>
             <text class="picker-arrow">›</text>
@@ -74,3 +75,5 @@
   </view>
 </view>
 <bind-guard />
+
+<include src="../../templates/feedback.wxml"/>

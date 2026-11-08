@@ -1,4 +1,4 @@
-<view class="container">
+<view class="container tb-unified tb-screen-Bind">
   <!-- 自定义导航栏 -->
   <view class="custom-nav" style="padding-top: {{statusBarHeight}}px;">
     <view class="nav-content">
@@ -79,11 +79,13 @@
       <view class="section">
         <view class="tips-card">
           <view class="tips-header">
-            <text class="tips-icon">💡</text>
+            <view class="tips-icon"><image class="tb-line-icon" src="/images/tandem/icons/heart-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
             <text class="tips-title">小贴士</text>
           </view>
           <view class="tips-list">
-            <text class="tips-item">· 点菜后对方会收到通知提醒</text>
+            <text class="tips-item">· 一个小厨房，一起管理喜欢的菜</text>
+            <text class="tips-item">· 双方原有菜品、点菜记录和历史账目一并共享</text>
+            <text class="tips-item">· 账目双方均可查看、修改、删除和恢复</text>
             <text class="tips-item">· 菜品库内容双方共享</text>
             <text class="tips-item">· 可以查看彼此的点菜历史</text>
           </view>
@@ -93,7 +95,7 @@
       <!-- 解绑区域 -->
       <view class="section unbind-section">
         <view class="unbind-btn-light" bindtap="unbindPartner">解除绑定</view>
-        <text class="unbind-tip">解绑后将无法互相看到点菜记录</text>
+        <text class="unbind-tip">解绑后双方各保留完整副本，之后停止同步</text>
       </view>
     </block>
 
@@ -101,7 +103,7 @@
     <block wx:else>
       <!-- 页面头部 -->
       <view class="page-header">
-        <text class="header-emoji">💕</text>
+        <view class="header-emoji"><image class="tb-line-icon" src="/images/tandem/icons/heart-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
         <text class="header-title">伴侣绑定</text>
         <text class="header-subtitle">绑定后可以共享菜品库和点菜记录</text>
       </view>
@@ -124,14 +126,15 @@
             </view>
           </view>
         </view>
-        <button class="share-btn" open-type="share">
-          <text class="share-icon">📤</text>
-          <text>邀请TA加入</text>
+        <button class="share-btn" bindtap="copyInviteCode">
+          <view class="share-icon"><image class="tb-line-icon" src="/images/tandem/icons/upload-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
+          <text>复制邀请码邀请TA</text>
         </button>
-        <text class="tip-text">点击上方按钮分享给TA，TA点击即可自动绑定</text>
+        <text class="tip-text">先让TA扫码进入体验版，再输入你的邀请码完成绑定</text>
       </view>
 
       <!-- 绑定伴侣 -->
+      <view class="tb-card"><view class="tb-heading">把小日子放在一起 ♡</view><view class="tb-muted">绑定后，双方已录入的菜品、做饭记录和历史账目会合并到同一个小厨房与账本。</view></view>
       <view class="section">
         <view class="section-title">绑定伴侣</view>
         <view class="card">
@@ -179,3 +182,5 @@
     </view>
   </view>
 </view>
+
+<include src="../../templates/feedback.wxml"/>

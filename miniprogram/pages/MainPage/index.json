@@ -1,4 +1,5 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "帕恰狗的小厨房"
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "TandemBite 伴食"
 }

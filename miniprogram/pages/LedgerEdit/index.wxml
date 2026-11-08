@@ -1,0 +1,22 @@
+<view class="tb-page tb-unified tb-screen-LedgerEdit">
+  <view class="tb-draft-banner" wx:if="{{draftMessage}}"><text>{{draftMessage}}</text><view class="tb-actions"><button wx:if="{{draftBlocked}}" class="tb-text-btn" bindtap="viewDraft">查看旧草稿</button><button class="tb-text-btn" bindtap="discardDraft">{{draftBlocked ? '放弃旧草稿' : '清除草稿'}}</button></view></view>
+  <view class="tb-title">{{readOnly ? '封存的生活记录' : (id ? '编辑这笔账' : '记下这一笔')}}</view>
+  <view class="tb-muted">{{sharing ? '保存到我们的生活账本。' : '记住生活的每一笔小事。'}}</view>
+  <view class="tb-error" wx:if="{{error}}">{{error}}<button class="tb-text-btn" wx:if="{{!ready}}" bindtap="load">重新加载</button></view>
+  <block wx:if="{{!loading && ready}}">
+    <view class="tb-tabs"><button data-type="expense" bindtap="setType" class="{{type === 'expense' ? 'active' : ''}}" disabled="{{readOnly || saving || deleted || draftBlocked}}">支出</button><button data-type="income" bindtap="setType" class="{{type === 'income' ? 'active' : ''}}" disabled="{{readOnly || saving || deleted || draftBlocked}}">收入</button></view>
+    <view class="tb-field-label">金额 · 人民币</view><input class="tb-money-input" type="digit" maxlength="11" placeholder="0.00" value="{{amount}}" focus="{{amountFocused}}" cursor-spacing="28" data-field="amount" bindinput="input" disabled="{{readOnly || saving || deleted || draftBlocked}}"/>
+    <view class="tb-category-grid"><button wx:for="{{categories}}" wx:key="*this" class="{{category === item ? 'selected' : ''}}" data-category="{{item}}" bindtap="selectCategory" disabled="{{readOnly || saving || deleted || draftBlocked}}"><image class="tb-line-icon" src="/images/tandem/icons/{{type === 'expense' ? categoryIcons[index] : 'wallet'}}-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/>{{item}}</button></view>
+    <view class="tb-field-label">日期</view><picker mode="date" value="{{dateKey}}" bindchange="changeDate" disabled="{{readOnly || saving || deleted || draftBlocked}}"><view class="tb-input">{{dateKey}} ⌄</view></picker>
+    <view class="tb-field-label">备注</view><input class="tb-input" placeholder="例如：今天的买菜钱" maxlength="100" value="{{note}}" data-field="note" bindinput="input" disabled="{{readOnly || saving || deleted || draftBlocked}}"/>
+    <view class="tb-quick-notes" wx:if="{{!readOnly && !deleted}}"><button wx:for="{{quickNotes}}" wx:key="*this" data-note="{{item}}" bindtap="useQuickNote" disabled="{{saving || draftBlocked}}">{{item}}</button></view>
+    <button wx:if="{{!readOnly && !deleted}}" class="tb-btn tb-full" bindtap="save" loading="{{saving}}" disabled="{{saving || draftBlocked}}">{{id ? '保存修改' : '记好了'}}</button>
+    <button wx:if="{{!id && !readOnly && !deleted}}" class="tb-btn tb-btn-light tb-full" bindtap="saveAndContinue" disabled="{{saving || draftBlocked}}">保存并再记一笔</button>
+    <button wx:if="{{id && !readOnly && !deleted}}" class="tb-text-btn tb-full tb-danger" bindtap="remove" disabled="{{saving || draftBlocked}}">删除这笔账</button>
+    <button wx:if="{{deleted && !readOnly}}" class="tb-btn tb-full" bindtap="restore" disabled="{{saving || draftBlocked}}">恢复这笔账</button>
+    <view class="tb-caption">{{meta}}</view><view class="tb-footer-art"><image src="/images/tandem/dog-snack.png" mode="aspectFit"/><text>每一笔小账，都是生活的足迹。</text></view>
+  </block>
+  <view class="tb-caption" wx:elif="{{loading}}">正在打开账本…</view>
+</view>
+
+<include src="../../templates/feedback.wxml"/>

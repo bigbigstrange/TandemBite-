@@ -33,14 +33,14 @@ Page({
     if (app.globalData.pendingInviteCode && this.data.bindStatus !== 'bound') {
       this.setData({ inputCode: app.globalData.pendingInviteCode })
       app.globalData.pendingInviteCode = null
-      setTimeout(() => this.bindPartner(), 500)
     }
   },
 
   // 加载用户信息
+
   async loadUserInfo() {
     this.setData({ loading: true })
-    const { currentUser, partner } = await app.loadUserInfo()
+    const { currentUser, partner } = await app.loadUserInfo(true)
 
     // 计算绑定天数和日期
     let bindDays = 0
@@ -75,11 +75,11 @@ Page({
   async loadStats() {
     try {
       const [dishRes, orderRes] = await Promise.all([
-        wx.cloud.callFunction({
+        app.callFunction({
           name: 'getCoupleData',
           data: { collection: app.globalData.collectionDishList, countOnly: true }
         }),
-        wx.cloud.callFunction({
+        app.callFunction({
           name: 'getCoupleData',
           data: { collection: app.globalData.collectionOrderList, countOnly: true }
         })
@@ -107,6 +107,8 @@ Page({
       return
     }
 
+    const confirmation = await wx.showModal({ title: '一起使用这个小厨房？', content: '双方已有菜品、做饭记录和历史账目将合并，之后共同查看、修改和删除。解绑时双方各保留完整副本，停止同步。整理期间请稍候。' })
+    if (!confirmation.confirm) return
     this.setData({ submitting: true })
     wx.showLoading({ title: '绑定中...', mask: true })
 
@@ -117,9 +119,9 @@ Page({
       await app.loadUserInfo(true)
       await this.loadUserInfo()
       wx.hideLoading()
-      wx.showToast({ title: '绑定成功', icon: 'success' })
+      wx.showToast({ title: '我们的小厨房准备好啦', icon: 'none' })
       // 绑定成功后立即请求通知授权，为接收伴侣点菜通知积攒额度
-      wx.requestSubscribeMessage({
+      app.requestSubscribeMessage({
         tmplIds: app.globalData.notifyTmplIds,
         complete: () => {}
       })
@@ -134,7 +136,7 @@ Page({
   unbindPartner() {
     wx.showModal({
       title: '确认解绑',
-      content: '解绑后你们将无法互相看到对方的点菜，确定要解绑吗？',
+      content: '双方各保留当前菜品、做饭记录和账目的完整副本。之后各自使用，新增或修改不再同步。确定解除绑定？',
       confirmColor: '#E57373',
       success: async (res) => {
         if (res.confirm) {
@@ -167,9 +169,9 @@ Page({
   onShareAppMessage() {
     const { inviteCode, nickname } = this.data
     return {
-      title: `${nickname || '我'}邀请你一起使用帕恰狗的小厨房`,
+      title: `${nickname || '我'}邀请你一起使用 TandemBite 伴食`,
       path: `/pages/MainPage/index?inviteCode=${inviteCode}`,
-      imageUrl: '/images/123.jpg'
+      imageUrl: '/images/tandem/brand.jpg'
     }
   },
 

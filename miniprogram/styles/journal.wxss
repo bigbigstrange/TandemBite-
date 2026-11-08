@@ -1,0 +1,91 @@
+/* 奶油手账：与确认稿一致的纸色、软阴影和手写标题；金额与表单保持系统字体。 */
+page .tb-unified{color:#4A392E;background:#FCF4E8}
+.tb-line-icon{display:inline-block;vertical-align:middle;flex-shrink:0;line-height:1}
+page .tb-unified .tb-card,page .tb-unified .input-card,page .tb-unified .settings-card,page .tb-unified .dish-info-card,page .tb-unified .recipe-card,page .tb-unified .card,page .tb-unified .stats-card{background:#FFFDF7;border:1rpx solid #E9DDCA;border-radius:40rpx;box-shadow:0 7rpx 24rpx #71512c09}
+page .tb-unified .tb-card:active{transform:none}
+page .tb-unified .home-order,page .tb-unified .home-shortcut,page .tb-unified .kitchen-add-tile{width:100%;max-width:none}
+page .tb-unified .home-dog{width:235rpx}
+page .tb-unified .kitchen-dog{width:160rpx}
+page .tb-unified .tb-mint{background:#E7EAD6;border-color:#E7EAD6}
+page .tb-unified .tb-title,page .tb-unified .page-title,page .tb-unified .header-title{font-family:'TandemCheer','YouYuan',sans-serif;font-weight:400;line-height:1.5;letter-spacing:-1rpx}
+page .tb-unified .tb-title{font-size:49rpx}
+page .tb-unified .tb-heading{font-size:36rpx;font-family:'TandemCheer','YouYuan',sans-serif;font-weight:400}
+page .tb-unified .tb-muted,page .tb-unified .page-subtitle,page .tb-unified .header-subtitle{color:#7E6C59;line-height:1.8}
+page .tb-unified .tb-big-money,page .tb-unified .tb-money-input{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-1.5rpx}
+page .tb-unified .page-header{background:#FCF4E8;padding:28rpx 31rpx 23rpx}
+page .tb-unified .tb-btn,page .tb-unified .btn-primary,page .tb-unified .btn-save,page .tb-unified .btn-edit,page .tb-unified .add-btn,page .tb-unified .save-sort-btn,page .tb-unified .share-btn,page .tb-unified .invite-btn,page .tb-unified .bind-btn,page .tb-unified .modal-btn.confirm{background:#637556;color:#FFFDF7;border-color:#637556;border-radius:27rpx;min-height:90rpx;box-shadow:none;gap:10rpx}
+page .tb-unified .tb-btn-light,page .tb-unified .btn-reset,page .tb-unified .modal-btn.cancel{background:#FFFDF7;color:#536447;border:1rpx solid #E9DDCA;border-radius:27rpx;min-height:90rpx}
+page .tb-unified .tb-btn-light{display:flex;align-items:center;justify-content:center;gap:8rpx}
+page .tb-unified .tb-tabs,page .tb-unified .tb-kitchen-tabs{background:#E7EAD6;border-radius:25rpx;gap:7rpx;padding:7rpx}
+page .tb-unified .tb-tabs button.active,page .tb-unified .tb-kitchen-tabs .active{background:#FFFDF7;color:#536447;box-shadow:0 2rpx 8rpx #71512c0b}
+page .tb-unified .tb-tabs button{min-height:72rpx;transition:background .18s ease,transform .16s ease}
+page .tb-unified .tb-chip{display:flex;align-items:center;justify-content:center;gap:5rpx;background:#E7EAD6;color:#536447;min-height:55rpx;width:auto;min-width:0;max-width:60%;padding:7rpx 18rpx}
+page .tb-unified .form-section{padding-top:17rpx}
+page .tb-unified .input-card{padding:26rpx 27rpx}
+page .tb-unified .input-label{font-size:28rpx}
+page .tb-unified .label-icon,page .tb-unified .subfield-icon,page .tb-unified .item-icon{display:inline-flex;align-items:center;justify-content:center}
+page .tb-unified .upload-placeholder{background:#F7F1E6;border-color:#E1D6C3;border-width:2rpx}
+page .tb-unified .footer{box-shadow:none}
+page .tb-unified .header-mascot{border-radius:27rpx;width:140rpx;height:140rpx;transform:rotate(3deg);background:transparent}
+page .tb-unified .copy-btn{background:#E7EAD6;color:#536447;border:0}
+page .tb-unified .search-bar{border-radius:24rpx;padding:18rpx 22rpx;background:#FFFDF7}
+page .tb-unified .search-input{font-size:29rpx;color:#4A392E}
+page .tb-unified .tb-menu-filters{gap:6rpx;padding:7rpx;border-radius:24rpx;background:#E7EAD6;margin-bottom:18rpx}
+page .tb-unified .tb-menu-filters button{background:transparent;border:0;border-radius:18rpx;color:#7E6C59;min-height:66rpx;line-height:1.5;padding:13rpx 5rpx;font-size:25rpx}
+page .tb-unified .tb-menu-filters button.active{background:#FFFDF7;color:#536447;box-shadow:0 2rpx 7rpx #71512c09}
+page .tb-unified .tb-favorite.is-favorite{background:#E7EAD6;color:#637556;animation:journal-star .22s ease}
+page .tb-unified .tb-draft-banner{background:#F0EBD9;border-color:#E1D8C2;color:#637556;font-size:23rpx;border-radius:21rpx;padding:14rpx 20rpx}
+page .tb-unified.tb-screen-Order .page-header{padding:15rpx 0 0}
+page .tb-unified.tb-screen-Order .menu-heading{display:flex;align-items:center;justify-content:space-between;gap:10rpx}
+page .tb-unified.tb-screen-Order .page-title{font-size:39rpx;margin:0}
+page .tb-unified.tb-screen-Order .menu-shortlinks{display:flex;gap:20rpx;font-size:24rpx;color:#637556;flex-shrink:0}
+page .tb-unified.tb-screen-Order .menu-shortlinks text{padding:15rpx 0}
+page .tb-unified.tb-screen-Order .search-box{background:#FFFDF7;border-color:#E9DDCA;border-radius:24rpx;padding:14rpx 20rpx;margin:17rpx 0}
+page .tb-unified.tb-screen-Order .category-list{background:#E7EAD6;border:0;border-radius:25rpx}
+page .tb-unified.tb-screen-Order .category-item{border:0;margin:9rpx 7rpx;padding:20rpx 4rpx;min-height:112rpx}
+page .tb-unified.tb-screen-Order .category-item.active{background:#FFFDF7;color:#536447;box-shadow:0 2rpx 8rpx #71512c09}
+page .tb-unified.tb-screen-Order .dish-list{background:transparent;border:0;border-radius:0}
+page .tb-unified.tb-screen-Order .category-header{background:#FCF4E8;min-height:57rpx;border:0;padding:9rpx 8rpx;margin:0;z-index:2}
+page .tb-unified.tb-screen-Order .dish-item{border:0;border-bottom:1rpx solid #E9DDCA;border-radius:0;background:transparent;padding:20rpx 3rpx;margin:0;gap:14rpx;min-height:163rpx}
+page .tb-unified.tb-screen-Order .dish-item.selected{background:#E7EAD680;border-radius:20rpx}
+page .tb-unified.tb-screen-Order .dish-image{width:119rpx;height:89rpx;border-radius:20rpx}
+page .tb-unified.tb-screen-Order .dish-check{width:58rpx;min-width:58rpx;height:58rpx;border-radius:19rpx}
+page .tb-unified.tb-screen-Order .dish-desc{background:transparent}
+page .tb-unified.tb-screen-Order .dish-name{font-size:28rpx;line-height:1.55}
+page .tb-unified.tb-screen-Order .footer{background:#637556;border:0;padding:15rpx 21rpx;border-radius:29rpx}
+page .tb-unified.tb-screen-Order .cart-hint,page .tb-unified.tb-screen-Order .btn-order{color:#FFFDF7;font-size:25rpx}
+page .tb-unified.tb-screen-Order .cart-badge{background:#FFFDF7;color:#637556}
+page .tb-unified.tb-screen-Order .btn-order{display:flex;align-items:center;gap:7rpx;flex-shrink:0}
+page .tb-unified.tb-screen-Order .cart-icon-img{font-size:34rpx}
+page .tb-unified.tb-screen-Ledger .tb-card{box-shadow:none}
+page .tb-unified.tb-screen-Ledger .tb-entry{padding:25rpx 0;gap:18rpx}
+page .tb-unified.tb-screen-Ledger .tb-entry-icon{background:#E7EAD6;width:66rpx;height:66rpx;border-radius:21rpx;flex-shrink:0}
+page .tb-unified.tb-screen-Ledger .tb-entry-main>view:first-child{font-size:29rpx}
+page .tb-unified.tb-screen-Ledger .tb-entry-money{font-size:30rpx;font-weight:500;font-variant-numeric:tabular-nums}
+page .tb-unified.tb-screen-Ledger .tb-entry.income .tb-entry-money{color:#637556}
+page .tb-unified.tb-screen-Ledger .ledger-date{font-size:24rpx;color:#7E6C59;margin:30rpx 0 2rpx}
+page .tb-unified.tb-screen-Ledger .ledger-chart{margin:15rpx 0 28rpx}
+page .tb-unified.tb-screen-LedgerEdit .tb-category-grid button{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8rpx;border-radius:23rpx;font-size:23rpx;min-height:120rpx}
+page .tb-unified.tb-screen-LedgerEdit .tb-category-grid button.selected{background:#E7EAD6;border-color:#A8B58E}
+page .tb-unified.tb-screen-LedgerEdit .tb-quick-notes{gap:12rpx}
+page .tb-unified.tb-screen-LedgerEdit .tb-input{font-size:29rpx}
+page .tb-unified.tb-screen-OrderDetail .header-card{background:#E7EAD6;border-radius:35rpx;box-shadow:none}
+page .tb-unified.tb-screen-OrderDetail .header-date,page .tb-unified.tb-screen-OrderDetail .header-time,page .tb-unified.tb-screen-OrderDetail .header-creator{color:#4A392E}
+page .tb-filter-sheet{background:#FCF4E8;border-radius:42rpx;box-shadow:0 -8rpx 40rpx #71512c12;animation:journal-sheet .23s ease}
+page .tb-filter-categories button{background:#FFFDF7;border-color:#E9DDCA}
+page .tb-filter-categories button.selected{background:#E7EAD6;border-color:#A8B58E;color:#536447}
+page .remark-content,page .success-content,page .cart-panel,page .detail-panel,page .modal-content{background:#FCF4E8;border-radius:40rpx}
+page .btn-confirm,page .cart-submit{background:#637556;color:#FFFDF7;border-radius:26rpx}
+page .remark-title,page .success-title,page .cart-panel-title{font-family:'TandemCheer','YouYuan',sans-serif;font-weight:400;color:#4A392E}
+page .remark-input{background:#FFFDF7;color:#4A392E;border:1rpx solid #E9DDCA;border-radius:25rpx;font-family:-apple-system,BlinkMacSystemFont,'Microsoft YaHei',sans-serif}
+page .success-image{animation:journal-dog .6s ease}
+page .tb-filter-categories button>.tb-line-icon{display:block;margin:0 auto 7rpx}
+page .search-box>.tb-line-icon,page .search-bar>.tb-line-icon{margin-right:13rpx}
+page button{transition:transform .15s ease,background-color .18s ease}
+page button:active{transform:scale(.98)}
+@keyframes journal-star{0%{transform:scale(.8)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes journal-dog{0%{opacity:.3;transform:translateY(24rpx) rotate(-5deg) scale(.85)}70%{opacity:1;transform:translateY(-7rpx) rotate(4deg) scale(1.03)}100%{opacity:1;transform:none}}
+@keyframes journal-sheet{from{opacity:.6;transform:translateY(40rpx)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){page button,page .success-image,page .tb-filter-sheet,page .tb-unified .tb-favorite.is-favorite{animation:none!important;transition:none!important}}
+@media(max-width:350px){page .tb-unified .home-dog{width:195rpx}}
+@media(max-width:350px){page .tb-unified .tb-muted,page .tb-unified .tb-caption,page .tb-unified .tb-entry-main>.tb-muted{font-size:11px}page .tb-unified .home-subtitle{font-size:11px!important}}

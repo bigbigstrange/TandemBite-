@@ -7,7 +7,7 @@
 /* 页面头部 */
 .page-header {
   padding: 40rpx 30rpx;
-  background: linear-gradient(135deg, #6FCF97 0%, #B8E6C1 100%);
+  background: linear-gradient(135deg, #637556 0%, #E7EAD6 100%);
 }
 
 .page-title {
@@ -127,7 +127,7 @@ mp-slideview .mark-btn,
 .history-dish {
   display: flex;
   align-items: center;
-  background: #F5F9F0;
+  background: #FCF4E8;
   border-radius: 40rpx;
   padding: 8rpx 24rpx 8rpx 8rpx;
 }
@@ -149,7 +149,7 @@ mp-slideview .mark-btn,
 
 .history-dish-name {
   font-size: 26rpx;
-  color: #5AC476;
+  color: #536447;
 }
 
 /* 备注 */
@@ -178,7 +178,7 @@ mp-slideview .mark-btn,
   justify-content: space-between;
   align-items: center;
   padding-top: 20rpx;
-  border-top: 2rpx solid #F5F9F0;
+  border-top: 2rpx solid #FCF4E8;
 }
 
 .history-creator {
@@ -188,7 +188,7 @@ mp-slideview .mark-btn,
 
 .dish-count {
   font-size: 26rpx;
-  color: #6FCF97;
+  color: #637556;
   font-weight: 500;
 }
 
@@ -200,7 +200,7 @@ mp-slideview .mark-btn,
 
 .load-more text {
   font-size: 28rpx;
-  color: #6FCF97;
+  color: #637556;
 }
 
 /* 没有更多 */
@@ -265,7 +265,7 @@ mp-slideview .mark-btn,
 }
 
 .tip-btn {
-  background: linear-gradient(135deg, #6FCF97 0%, #B8E6C1 100%);
+  background: linear-gradient(135deg, #637556 0%, #E7EAD6 100%);
   color: white;
   font-size: 28rpx;
   padding: 20rpx 60rpx;

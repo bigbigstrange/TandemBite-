@@ -1,4 +1,8 @@
 const app = getApp()
+const Feedback = require('../../utils/feedback')
+const feedback = Feedback.create(wx, app)
+const Drafts = require('../../utils/drafts.js')
+const drafts = Drafts.create(wx, app)
 const {
   DIFFICULTY_OPTIONS,
   COOK_TIME_OPTIONS,
@@ -23,6 +27,7 @@ Page({
     loadingDish: true,
     ingredientsHeight: 80,      // textarea 高度（rpx），由 estimateHeight 计算
     stepsHeight: 80,
+    draftMessage: '', draftBlocked: false,
   },
 
   onLoad(options) {
@@ -30,6 +35,10 @@ Page({
     this.setData({ dishId })
     this.loadDish()
   },
+  onHide() { drafts.flush(this) },
+  onUnload() { drafts.dispose(this) },
+  viewDraft() { drafts.inspect(this) },
+  async discardDraft() { if (this.data.saving) return; drafts.clear(this); await this.loadDish() },
 
   // 拉菜品已有信息（菜名 + 已有菜谱字段，便于编辑）
   async loadDish() {
@@ -38,7 +47,7 @@ Page({
       return
     }
     try {
-      const res = await wx.cloud.callFunction({
+      const res = await app.callFunction({
         name: 'getCoupleData',
         data: {
           collection: app.globalData.collectionDishList,
@@ -47,6 +56,7 @@ Page({
       })
       if (!res.result?.success) throw new Error(res.result?.message || '加载失败')
       const dish = res.result.data
+      this._baseRevision = Drafts.revision(dish)
       const difficulty = dish.difficulty && DIFFICULTY_OPTIONS.includes(dish.difficulty)
         ? dish.difficulty
         : '简单'
@@ -63,6 +73,9 @@ Page({
         stepsHeight: estimateHeight(dish.steps),
         loadingDish: false,
       })
+      drafts.open(this, { kind: 'recipe', id: this.data.dishId, base: this._baseRevision, fields: ['ingredients', 'steps', 'cookTime', 'cookTimeIndex', 'difficulty', 'difficultyIndex'] })
+      this.setData({ ingredientsHeight: estimateHeight(this.data.ingredients), stepsHeight: estimateHeight(this.data.steps) })
+      this._loadedDish = true
     } catch (e) {
       console.error('load dish error', e)
       wx.showToast({ title: '加载失败', icon: 'none' })
@@ -94,18 +107,20 @@ Page({
   },
 
   async save() {
-    if (this.data.saving) return
+    if (this.data.saving || this.data.draftBlocked || !this._loadedDish) return
     if (!this.data.ingredients.trim() && !this.data.steps.trim()) {
       wx.showToast({ title: '菜谱不能为空', icon: 'none' })
       return
     }
     this.setData({ saving: true })
+    drafts.flush(this)
     try {
-      const res = await wx.cloud.callFunction({
+      const res = await app.callFunction({
         name: 'updateCoupleData',
         data: {
           collection: app.globalData.collectionDishList,
           docId: this.data.dishId,
+          expectedRevision: this._baseRevision,
           action: 'update',
           data: {
             ingredients: this.data.ingredients.trim(),
@@ -117,8 +132,9 @@ Page({
         }
       })
       if (!res.result?.success) throw new Error(res.result?.message || '保存失败')
-      wx.showToast({ title: '保存成功', icon: 'success' })
-      setTimeout(() => wx.navigateBack(), 1000)
+      drafts.clear(this)
+      feedback.success(this, '菜谱，更新好啦', true)
+      setTimeout(() => wx.navigateBack(), 400)
     } catch (e) {
       console.error('save recipe error', e)
       wx.showToast({ title: '保存失败', icon: 'none' })

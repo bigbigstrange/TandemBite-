@@ -1,28 +1,34 @@
 /* 帕恰狗绿色主题 - 荔荔的小厨房 */
 @import './miniprogram_npm/weui-miniprogram/weui-wxss/dist/style/weui.wxss';
+@import './styles/tandem.wxss';
+@import './styles/tandem-font.wxss';
+@import './styles/unified.wxss';
+@import './styles/journal.wxss';
+@import './styles/feedback.wxss';
 
 /* 主题色变量 */
 page {
-  --primary-color: #6FCF97;
-  --primary-light: #B8E6C1;
-  --primary-dark: #5AC476;
-  --bg-color: #F5F9F0;
-  --card-bg: #FFFFFF;
-  --text-primary: #333333;
-  --text-secondary: #666666;
-  --text-hint: #999999;
-  --border-color: #E8F5E9;
-  --success-color: #6FCF97;
+  --primary-color: #637556;
+  --primary-light: #E7EAD6;
+  --primary-dark: #536447;
+  --bg-color: #FCF4E8;
+  --card-bg: #FFFDF7;
+  --text-primary: #4A392E;
+  --text-secondary: #7E6C59;
+  --text-hint: #7E6C59;
+  --border-color: #E9DDCA;
+  --success-color: #637556;
   --warning-color: #FFB74D;
 
   --footer-height: 10vh;
   --button-size: 16vw;
-  --button-color: #6FCF97;
+  --button-color: #637556;
   --button-icon-size: 6vw;
 }
 
 page {
   background: var(--bg-color);
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

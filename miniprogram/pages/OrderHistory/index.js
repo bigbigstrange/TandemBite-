@@ -1,6 +1,9 @@
 const app = getApp()
 
 Page({
+  goMenu() { wx.redirectTo({ url: '/pages/Order/index' }) },
+  goLibrary() { wx.redirectTo({ url: '/pages/Dishes/index' }) },
+  goMealHistory() { wx.redirectTo({ url: '/pages/OrderHistory/index' }) },
   data: {
     isBound: false,
     orders: [],
@@ -15,8 +18,6 @@ Page({
   },
 
   async onShow() {
-    app.setKitchenTitle()
-    await this.loadUserInfo()
     await this.loadOrders(true)
   },
 
@@ -30,9 +31,9 @@ Page({
   },
 
   // 加载历史记录
-  async loadOrders(reset = false) {
+  async loadOrders(reset = false, force = false) {
     if (reset) {
-      this.setData({ page: 0, orders: [], hasMore: true })
+      this.setData({ page: 0, hasMore: true })
     }
 
     this.setData({ loading: true })
@@ -40,22 +41,10 @@ Page({
     try {
       const { page, pageSize, orders: existingOrders } = this.data
 
-      const res = await wx.cloud.callFunction({
-        name: 'getCoupleData',
-        data: {
-          collection: app.globalData.collectionOrderList,
-          orderBy: 'createTime',
-          order: 'desc',
-          skip: page * pageSize,
-          limit: pageSize
-        }
-      })
-
-      if (!res.result?.success) {
-        throw new Error(res.result?.message || '加载失败')
-      }
-
-      const data = res.result.data
+      const result = await app.getView('history', { skip: page * pageSize, limit: pageSize }, force)
+      app.setKitchenTitle()
+      this.setData({ openid: app.globalData.currentUser._id, partnerName: app.getPartnerName(), isBound: app.isBound() })
+      const data = result.orders
       const newOrders = data.map(item => ({
         ...item,
         dateText: this.formatDate(item.createTime),
@@ -147,7 +136,7 @@ Page({
     const newMarked = !orders[index].marked
     wx.showLoading({ title: '处理中...', mask: true })
     try {
-      const res = await wx.cloud.callFunction({
+      const res = await app.callFunction({
         name: 'updateCoupleData',
         data: {
           collection: app.globalData.collectionOrderList,
@@ -185,7 +174,7 @@ Page({
         if (res.confirm) {
           wx.showLoading({ title: '删除中...', mask: true })
           try {
-            const result = await wx.cloud.callFunction({
+            const result = await app.callFunction({
               name: 'updateCoupleData',
               data: {
                 collection: app.globalData.collectionOrderList,
@@ -230,7 +219,7 @@ Page({
   // 跳转到详情页
   goToDetail(e) {
     const id = e.currentTarget.dataset.id
-    wx.requestSubscribeMessage({
+    app.requestSubscribeMessage({
       tmplIds: app.globalData.notifyTmplIds,
       complete: () => {
         wx.navigateTo({ url: `/pages/OrderDetail/index?id=${id}` })
@@ -240,7 +229,7 @@ Page({
 
   // 下拉刷新
   onPullDownRefresh() {
-    this.loadOrders(true).then(() => {
+    this.loadOrders(true, true).then(() => {
       wx.stopPullDownRefresh()
     })
   },

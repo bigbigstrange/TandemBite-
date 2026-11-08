@@ -1,30 +1,34 @@
-<view class="container">
+<view class="container tb-unified tb-screen-Order">
   <!-- 页面头部 -->
   <view class="page-header">
-    <text class="page-title">今天吃什么？</text>
-    <text class="page-subtitle">选好菜品，通知{{partnerName}}~</text>
+    <view class="menu-heading"><text class="page-title">今晚想吃什么？</text><view class="menu-shortlinks"><text bindtap="goLibrary">菜品库</text><text bindtap="goMealHistory">记录</text></view></view>
     <!-- 搜索框 -->
     <view class="search-box">
-      <text class="search-icon">🔍</text>
+      <image class="tb-line-icon" src="/images/tandem/icons/search-primary.png" style="width:32rpx;height:32rpx" mode="aspectFit" aria-hidden="true"/>
       <input class="search-input" placeholder="搜索菜品" value="{{searchKey}}" bindinput="onSearchInput" confirm-type="search" />
       <text class="search-clear" wx:if="{{searchKey}}" bindtap="clearSearch">✕</text>
     </view>
+    <view class="tb-menu-filters"><button class="{{filterMode === 'all' ? 'active' : ''}}" data-mode="all" bindtap="changeFilter">全部</button><button class="{{filterMode === 'favorite' ? 'active' : ''}}" data-mode="favorite" bindtap="changeFilter"><image class="tb-line-icon" src="/images/tandem/icons/star-primary.png" style="width:26rpx;height:26rpx" mode="aspectFit" aria-hidden="true"/> 收藏</button><button class="{{filterMode === 'frequent' ? 'active' : ''}}" data-mode="frequent" bindtap="changeFilter">常做</button></view>
+    <text class="tb-muted tb-filter-hint" wx:if="{{filterMode === 'frequent'}}">按点菜次数排序，常吃的味道放前面</text>
   </view>
 
+  <view class="tb-error" wx:if="{{error}}">{{error}}<button class="tb-text-btn" bindtap="onShow">重新加载</button></view>
+  <view class="tb-caption" wx:if="{{loading}}">正在打开小厨房…</view>
   <!-- 空状态 -->
-  <view class="empty-state" wx:if="{{dishes.length === 0 && !loading}}">
-    <image class="empty-image" src="/images/1efe5aea4d976b0e8597d4ffd5c068bc.jpg" mode="aspectFit"></image>
+  <view class="tb-draft-banner" wx:if="{{cartRestored}}">已恢复上次待选餐单<button class="tb-text-btn" bindtap="clearCart">清空选择</button></view>
+  <view class="empty-state" wx:if="{{allDishes.length === 0 && !loading && !error}}">
+    <image class="empty-image" src="/images/tandem/dog-food.png" mode="aspectFit"></image>
     <text class="empty-title">菜品库还是空的</text>
     <text class="empty-desc">先去添加一些菜品吧~</text>
     <view class="btn-primary" bindtap="goToDishes">去添加菜品</view>
   </view>
 
   <!-- 左右分栏布局 -->
-  <view class="menu-container" wx:if="{{dishes.length > 0}}">
+  <view class="menu-container" wx:if="{{allDishes.length > 0}}">
     <!-- 左侧分类 -->
     <scroll-view class="category-list" scroll-y scroll-with-animation scroll-into-view="{{categoryScrollId}}">
       <view class="category-item {{currentCategory === item._id ? 'active' : ''}}"
-            wx:for="{{categories}}" wx:key="_id"
+            wx:for="{{categories}}" wx:key="_id" wx:if="{{categoryCount[item._id] > 0}}"
             id="catleft-{{item._id}}"
             data-id="{{item._id}}" bindtap="selectCategory">
         <text class="category-icon">{{item.icon}}</text>
@@ -34,20 +38,21 @@
     </scroll-view>
 
     <!-- 右侧菜品 -->
-    <scroll-view class="dish-list" scroll-y scroll-with-animation
-                 scroll-into-view="{{dishScrollId}}" bindscroll="onDishScroll">
-      <view wx:for="{{categories}}" wx:key="_id" wx:if="{{categoryCount[item._id] > 0}}">
-        <view class="category-header" id="cat-{{item._id}}">
+    <scroll-view class="dish-list" scroll-y scroll-with-animation refresher-enabled refresher-triggered="{{refreshing}}" bindrefresherrefresh="refreshMenu"
+                 scroll-top="{{menuScrollTop}}" scroll-into-view="{{dishScrollId}}" bindscroll="onDishScroll">
+      <view class="tb-menu-empty" wx:if="{{!dishes.length}}">{{filterMode === 'favorite' ? '还没有收藏，点亮菜品旁的星星吧。' : (filterMode === 'frequent' ? '第一次点菜后，常做清单就会慢慢积攒。' : '没有找到匹配的菜品，换个关键词试试。')}}</view>
+      <view class="dish-category" id="cat-{{item._id}}" wx:for="{{categories}}" wx:key="_id" wx:if="{{categoryCount[item._id] > 0}}">
+        <view class="category-header">
           <text class="category-header-icon">{{item.icon}}</text>
           <text class="category-header-name">{{item.name}}</text>
         </view>
         <view class="dish-item {{dish.selected ? 'selected' : ''}}"
               wx:for="{{dishesByCategory[item._id]}}" wx:for-item="dish" wx:key="_id"
               data-id="{{dish._id}}" bindtap="toggleSelect">
-          <image class="dish-image" wx:if="{{dish.imageUrl}}" src="{{dish.imageUrl}}" mode="aspectFill" data-id="{{dish._id}}" catchtap="openDishDetail"></image>
-          <image class="dish-image" wx:else src="/images/1efe5aea4d976b0e8597d4ffd5c068bc.jpg" mode="aspectFill" data-id="{{dish._id}}" catchtap="openDishDetail"></image>
+          <image lazy-load class="dish-image" wx:if="{{dish.imageUrl}}" src="{{dish.imageUrl}}" mode="aspectFill" data-id="{{dish._id}}" catchtap="openDishDetail"></image>
+          <image lazy-load class="dish-image" wx:else src="/images/tandem/dish-placeholder.png" mode="aspectFill" data-id="{{dish._id}}" catchtap="openDishDetail"></image>
           <view class="dish-info">
-            <text class="dish-name">{{dish.name}}</text>
+            <view class="tb-dish-title"><text class="dish-name">{{dish.name}}</text><button class="tb-favorite {{dish.favorite ? 'is-favorite' : ''}}" data-id="{{dish._id}}" catchtap="toggleFavorite" aria-label="{{dish.favorite ? '取消收藏' : '收藏菜品'}}"><image class="tb-line-icon" src="/images/tandem/icons/{{dish.favorite ? 'star-filled' : 'star'}}-{{dish.favorite ? 'primary' : 'muted'}}.png" style="width:32rpx;height:32rpx" mode="aspectFit" aria-hidden="true"/></button></view>
             <view class="dish-meta">
               <text class="dish-desc" wx:if="{{dish.description}}">"{{dish.description}}"</text>
               <text class="dish-count" wx:if="{{dish.orderCount > 0}}">已点{{dish.orderCount}}次</text>
@@ -63,17 +68,17 @@
   </view>
 
   <!-- 底部操作栏 -->
-  <view class="footer" wx:if="{{dishes.length > 0}}">
+  <view class="footer" wx:if="{{allDishes.length > 0}}">
     <view class="footer-cart" bindtap="toggleCartPanel">
       <view class="cart-icon-wrap">
-        <image class="cart-icon-img" src="/images/4240a5a23a03b63adf5962d90e183f0f-removebg-preview.png" mode="aspectFit"></image>
+      <image class="tb-line-icon" src="/images/tandem/icons/shopping-basket-cream.png" style="width:43rpx;height:43rpx" mode="aspectFit" aria-hidden="true"/>
         <text class="cart-badge" wx:if="{{selectedCount > 0}}">{{selectedCount}}</text>
       </view>
       <text class="cart-hint" wx:if="{{selectedCount === 0}}">请选择菜品</text>
       <text class="cart-hint" wx:else>已选{{selectedCount}}道菜</text>
     </view>
     <view class="btn-order {{selectedCount > 0 ? 'active' : ''}}" bindtap="submitOrder">
-      确认点菜
+      保存餐单 <image class="tb-line-icon" src="/images/tandem/icons/arrow-right-cream.png" style="width:28rpx;height:28rpx" mode="aspectFit" aria-hidden="true"/>
     </view>
   </view>
 </view>
@@ -92,8 +97,8 @@
       <text>还没有选择菜品哦~</text>
     </view>
     <view class="cart-item" wx:for="{{selectedDishes}}" wx:key="_id">
-      <image class="cart-item-image" wx:if="{{item.imageUrl}}" src="{{item.imageUrl}}" mode="aspectFill"></image>
-      <image class="cart-item-image" wx:else src="/images/1efe5aea4d976b0e8597d4ffd5c068bc.jpg" mode="aspectFill"></image>
+      <image lazy-load class="cart-item-image" wx:if="{{item.imageUrl}}" src="{{item.imageUrl}}" mode="aspectFill"></image>
+      <image lazy-load class="cart-item-image" wx:else src="/images/tandem/dish-placeholder.png" mode="aspectFill"></image>
       <view class="cart-item-info">
         <text class="cart-item-name">{{item.name}}</text>
         <view class="cart-item-meta">
@@ -126,9 +131,9 @@
 <!-- 成功弹窗 -->
 <view class="success-modal" wx:if="{{showSuccess}}">
   <view class="success-content">
-    <image class="success-image" src="/images/7b4bee27a7ccb84274ec7753e54c50c7.gif" mode="aspectFit"></image>
+    <image class="success-image" src="/images/tandem/dog-food.png" mode="aspectFit"></image>
     <text class="success-title">点菜成功！</text>
-    <text class="success-desc">已通知{{partnerName}}啦~</text>
+    <text class="success-desc">餐单已保存，做好后去记录美味吧</text>
     <view class="btn-primary" bindtap="closeSuccess">好的</view>
   </view>
 </view>
@@ -145,8 +150,8 @@
       <view class="detail-pull-hint" catchtap="closeDishDetail">
         <view class="pull-chevron"></view>
       </view>
-      <image class="detail-dish-image" wx:if="{{currentDish.imageUrl}}" src="{{currentDish.imageUrl}}" mode="widthFix"></image>
-      <image class="detail-dish-image" wx:else src="/images/1efe5aea4d976b0e8597d4ffd5c068bc.jpg" mode="widthFix"></image>
+      <image lazy-load class="detail-dish-image" wx:if="{{currentDish.imageUrl}}" src="{{currentDish.imageUrl}}" mode="widthFix"></image>
+      <image lazy-load class="detail-dish-image" wx:else src="/images/tandem/dish-placeholder.png" mode="widthFix"></image>
     </view>
     <view class="detail-dish-info">
       <text class="detail-dish-name">{{currentDish.name}}</text>
@@ -164,3 +169,5 @@
 </view>
 
 <bind-guard />
+
+<include src="../../templates/feedback.wxml"/>

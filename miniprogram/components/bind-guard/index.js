@@ -7,10 +7,8 @@ Component({
     show() {
       const app = getApp()
       if (!app) return
-      if (!app.isProfileComplete()) {
+      if (app.globalData.currentUser && !app.isProfileComplete()) {
         this.setData({ show: true, type: 'profile' })
-      } else if (!app.isBound()) {
-        this.setData({ show: true, type: 'bind' })
       } else {
         this.setData({ show: false, type: '' })
       }
@@ -21,7 +19,8 @@ Component({
       wx.navigateTo({ url: '/pages/Bind/index' })
     },
     goToSetProfile() {
-      wx.navigateTo({ url: '/pages/Settings/index?editProfile=true' })
+      getApp().globalData.editProfile = true
+      wx.switchTab({ url: '/pages/Settings/index' })
     }
   }
 })

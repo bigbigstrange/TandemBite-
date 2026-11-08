@@ -1,0 +1,55 @@
+/* 所有页面共用的奶油、深棕、薄荷主题；正文和钱数沿用系统字体。 */
+.container.tb-unified,.tb-page.tb-unified{background:#FCF4E8;color:#4A392E}
+.tb-unified .page-header{background:#FCF4E8;padding:34rpx 32rpx 28rpx;box-shadow:none}
+.tb-unified .page-title,.tb-unified .header-title,.tb-unified .nav-title,.tb-unified.tb-screen-DishDetail .dish-info-card>.dish-name,.tb-unified .recipe-title{font-family:'TandemCheer','YouYuan',sans-serif;color:#4A392E;font-weight:400}
+.tb-unified .page-title{font-size:44rpx;line-height:1.4;margin-bottom:10rpx}
+.tb-unified .page-subtitle,.tb-unified .header-subtitle{color:#7E6C59;font-size:25rpx;line-height:1.7}
+.tb-unified .form-section{padding:22rpx 28rpx}
+.tb-unified .input-card,.tb-unified .settings-card,.tb-unified .dish-info-card,.tb-unified .recipe-card,.tb-unified .dish-card,.tb-unified .modal-content,.tb-unified .recipe-empty{background:#FFFDF7;border:1rpx solid #E9DDCA;border-radius:30rpx;box-shadow:none}
+.tb-unified .input-label,.tb-unified .item-label,.tb-unified .section-title,.tb-unified .modal-title{color:#4A392E}
+.tb-unified .input-field,.tb-unified .recipe-textarea,.tb-unified .field-input,.tb-unified .picker-value{color:#4A392E;background:#FFFDF7}
+.tb-unified .btn-primary,.tb-unified .btn-save,.tb-unified .save-btn,.tb-unified .btn-edit,.tb-unified .add-btn,.tb-unified .save-sort-btn,.tb-unified .modal-btn.confirm,.tb-unified .empty-action,.tb-unified .invite-btn,.tb-unified .bind-btn,.tb-unified .share-btn{background:#E7EAD6;color:#536447;border:1rpx solid #C4CEB2;border-radius:26rpx;box-shadow:none;min-height:88rpx;box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:29rpx}
+.tb-unified .btn-reset,.tb-unified .modal-btn.cancel{background:#FFFDF7;color:#7E6C59;border:1rpx solid #E9DDCA;border-radius:26rpx;box-sizing:border-box;min-height:88rpx;display:flex;align-items:center;justify-content:center}
+.tb-unified .search-bar,.tb-unified .picker-value{border:1rpx solid #E9DDCA;box-shadow:none;border-radius:24rpx}
+.tb-unified .search-section{margin-top:0;padding:8rpx 28rpx 20rpx}
+.tb-unified .custom-nav,.tb-unified .couple-header-bound,.tb-unified .couple-header,.tb-unified .bind-header{background:#FCF4E8;color:#4A392E}
+.tb-unified .couple-name,.tb-unified .couple-days,.tb-unified .couple-slogan,.tb-unified .back-icon,.tb-unified .bind-title,.tb-unified .bind-subtitle{color:#4A392E;text-shadow:none}
+.tb-unified .card,.tb-unified .stats-card{background:#FFFDF7;border:1rpx solid #E9DDCA;border-radius:30rpx;box-shadow:none}
+.tb-unified .copy-btn,.tb-unified .fab{background:#E7EAD6;color:#536447;box-shadow:none;border:1rpx solid #C4CEB2}
+.tb-unified .fab-text{color:#536447}
+.tb-unified .header-mascot{box-shadow:none;border:1rpx solid #E9DDCA}
+.tb-unified .tb-btn{background:#E7EAD6;color:#536447;border:1rpx solid #C4CEB2;font-weight:500;min-height:88rpx}
+.tb-unified .tb-btn-light{background:#FFFDF7;color:#536447;border-color:#E9DDCA}
+.tb-unified.tb-screen-Order .page-header{padding:20rpx 0 12rpx}
+.tb-unified.tb-screen-Order .dish-name{font-family:inherit;font-size:27rpx}
+.tb-unified.tb-screen-DishAdd .upload-card{height:0;padding-top:75%;background:#F2EBDD;border-radius:30rpx}
+.tb-unified.tb-screen-DishAdd .upload-card.has-image{height:auto;padding-top:0}
+.tb-unified.tb-screen-DishAdd .upload-placeholder{position:absolute;top:0;left:0;width:100%;height:100%}
+.tb-unified.tb-screen-DishAdd .preview-image{position:static;width:100%;height:auto;display:block}
+.tb-unified.tb-screen-DishAdd .footer{background:#FCF4E8;border-top:1rpx solid #E9DDCA;gap:18rpx}
+.tb-unified.tb-screen-Order .dish-image{height:90rpx}
+.tb-unified.tb-screen-Order .footer{background:#E7EAD6;border:1rpx solid #C4CEB2}
+.tb-unified.tb-screen-Order .cart-hint,.tb-unified.tb-screen-Order .btn-order{color:#536447}
+.tb-unified.tb-screen-Order .cart-badge{background:#536447;color:#FFFDF7}
+.tb-unified.tb-screen-RecipeEdit .footer{background:#FCF4E8;border-top:1rpx solid #E9DDCA}
+.tb-unified.tb-screen-OrderHistory .history-dish-image{width:96rpx;height:72rpx;border-radius:16rpx}
+.tb-unified.tb-screen-OrderDetail .dish-image{width:120rpx;height:90rpx;border-radius:18rpx}
+.tb-draft-banner{padding:18rpx 24rpx;margin:14rpx 24rpx;background:#E9F0E3;border:1rpx solid #CCD9C3;border-radius:22rpx;font-size:24rpx;color:#536447;line-height:1.6;flex-shrink:0}
+.tb-draft-banner .tb-text-btn{padding:6rpx 0;min-height:50rpx;font-size:23rpx}
+.tb-menu-filters{display:flex;gap:12rpx;padding:10rpx 0 14rpx;flex-shrink:0}
+.tb-menu-filters button{flex:1;margin:0;background:#FFFDF7;color:#7E6C59;font-size:25rpx;line-height:1.5;padding:16rpx 8rpx;border:1rpx solid #E9DDCA;border-radius:22rpx}
+.tb-menu-filters button.active{background:#E7EAD6;color:#536447;border-color:#C4CEB2}
+.tb-screen-Dishes .tb-menu-filters{margin:0 28rpx}
+.tb-filter-hint{display:block;font-size:22rpx;padding:0 8rpx 12rpx;color:#7E6C59}
+.tb-menu-empty{padding:60rpx 24rpx;color:#7E6C59;font-size:25rpx;line-height:1.8}
+.tb-dish-title{display:flex;align-items:flex-start;gap:8rpx}
+.tb-dish-title .dish-name{flex:1;min-width:0}
+.tb-favorite{flex-shrink:0;width:54rpx!important;min-width:54rpx;height:54rpx;min-height:54rpx;padding:0;margin:0;line-height:54rpx;font-size:38rpx;color:#9A8D76;background:transparent;border-radius:18rpx}
+.tb-favorite.is-favorite{color:#9C6628;background:#FAEDD6}
+.tb-dish-cover{position:relative;width:100%;padding-top:75%;background:#F2EBDD}
+.tb-unified .tb-dish-cover .dish-card-image{position:absolute;top:0;left:0;width:100%;height:100%}
+.tb-card-favorite{position:absolute;right:12rpx;top:12rpx;background:#FFFDF7}
+.tb-photo-actions,.tb-quick-notes{display:flex;flex-wrap:wrap;gap:12rpx;margin:12rpx 0 24rpx}
+.tb-photo-actions button{flex:1}
+.tb-quick-notes button{width:auto;min-width:0;flex:0 0 auto;font-size:24rpx;line-height:1.5;padding:12rpx 20rpx;margin:0;background:#FFFDF7;border:1rpx solid #E9DDCA;border-radius:24rpx;color:#4A392E}
+.tb-unified button[disabled],.tb-unified .tb-disabled{opacity:.55}

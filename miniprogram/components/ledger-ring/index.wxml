@@ -1,0 +1,11 @@
+<view class="ring-layout">
+  <view class="ring-figure">
+    <canvas type="2d" id="ring-canvas" class="ring-canvas" aria-label="分类支出占比"/>
+    <view class="ring-fallback" wx:if="{{!canvasReady}}"/>
+    <view class="ring-center"><text class="ring-label">{{centerLabel}}</text><text class="ring-money" style="font-size:{{moneySize}}rpx">{{centerMoney}}</text></view>
+  </view>
+  <view class="ring-aside"><text class="ring-title">钱花在哪里</text><text>{{rows.length ? '点分类查看金额' : '这段时间还没有支出'}}</text><text>只统计支出</text></view>
+</view>
+<button class="ring-row {{selectedName === item.name ? 'selected' : ''}}" wx:for="{{rows}}" wx:key="name" data-name="{{item.name}}" bindtap="selectCategory" aria-label="{{item.name}}，{{item.amount}}元，占{{item.percentText}}%" aria-pressed="{{selectedName === item.name}}">
+  <view class="ring-swatch" style="background:{{item.color}}"/><text class="ring-category">{{item.name}}</text><text class="ring-percent">{{item.percentText}}%</text><text class="ring-amount">¥ {{item.amount}}</text>
+</button>

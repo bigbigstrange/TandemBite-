@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "生活账本",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "ledger-ring": "/components/ledger-ring/index"
+  }
+}

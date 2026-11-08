@@ -10,41 +10,49 @@
     "pages/OrderDetail/index",
     "pages/Settings/index",
     "pages/Bind/index",
-    "pages/CategoryManage/index"
+    "pages/CategoryManage/index",
+    "pages/Kitchen/index",
+    "pages/Ledger/index",
+    "pages/LedgerEdit/index"
   ],
   "window": {
-    "backgroundColor": "#F5F9F0",
+    "backgroundColor": "#FCF4E8",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#6FCF97",
-    "navigationBarTitleText": "帕恰狗的小厨房",
-    "navigationBarTextStyle": "white"
+    "navigationBarBackgroundColor": "#FCF4E8",
+    "navigationBarTitleText": "TandemBite 伴食",
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#666666",
-    "selectedColor": "#6FCF97",
-    "backgroundColor": "#ffffff",
+    "color": "#7E6C59",
+    "selectedColor": "#637556",
+    "backgroundColor": "#FFFDF7",
     "borderStyle": "white",
-    "list": [{
-      "pagePath": "pages/MainPage/index",
-      "iconPath": "images/TabBar/HomeIconGrey.png",
-      "selectedIconPath": "images/TabBar/HomeIconColor.png",
-      "text": "首页"
-    }, {
-      "pagePath": "pages/Order/index",
-      "iconPath": "images/TabBar/MarketIconGrey.png",
-      "selectedIconPath": "images/TabBar/MarketIconColor.png",
-      "text": "点菜"
-    }, {
-      "pagePath": "pages/Dishes/index",
-      "iconPath": "images/TabBar/MissionIconGrey.png",
-      "selectedIconPath": "images/TabBar/MissionIconColor.png",
-      "text": "菜品库"
-    }, {
-      "pagePath": "pages/OrderHistory/index",
-      "iconPath": "images/TabBar/AccountIconGrey.png",
-      "selectedIconPath": "images/TabBar/AccountIconColor.png",
-      "text": "历史"
-    }]
+    "list": [
+      {
+        "pagePath": "pages/MainPage/index",
+        "iconPath": "images/tandem/home-idle.png",
+        "selectedIconPath": "images/tandem/home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/Kitchen/index",
+        "iconPath": "images/tandem/kitchen-idle.png",
+        "selectedIconPath": "images/tandem/kitchen-active.png",
+        "text": "厨房"
+      },
+      {
+        "pagePath": "pages/Ledger/index",
+        "iconPath": "images/tandem/ledger-idle.png",
+        "selectedIconPath": "images/tandem/ledger-active.png",
+        "text": "账本"
+      },
+      {
+        "pagePath": "pages/Settings/index",
+        "iconPath": "images/tandem/mine-idle.png",
+        "selectedIconPath": "images/tandem/mine-active.png",
+        "text": "我的"
+      }
+    ]
   },
   "usingComponents": {
     "bind-guard": "/components/bind-guard/index"

@@ -1,21 +1,24 @@
-<view class="container">
+<view class="container tb-unified tb-screen-Dishes">
+  <view class="tb-kitchen-tabs"><view bindtap="goMenu">点菜</view><view class="active" bindtap="goLibrary">菜品库</view><view bindtap="goMealHistory">做饭记录</view></view>
   <!-- 页面头部 -->
   <view class="page-header">
     <text class="page-title">菜品库</text>
-    <text class="page-subtitle">和{{partnerName}}一起管理你们的菜单 ~</text>
+    <text class="page-subtitle">慢慢积攒，喜欢的家常味道。🌷</text>
   </view>
 
   <!-- 搜索框 -->
   <view class="search-section">
     <view class="search-bar">
-      <text class="search-icon">🔍</text>
+      <view class="search-icon"><image class="tb-line-icon" src="/images/tandem/icons/search-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
       <input class="search-input" placeholder="搜索菜品..." bindinput="onSearch" value="{{search}}" />
     </view>
   </view>
 
   <!-- 空状态 -->
+  <view class="tb-menu-filters"><button class="{{filterMode === 'all' ? 'active' : ''}}" data-mode="all" bindtap="changeFilter">全部</button><button class="{{filterMode === 'favorite' ? 'active' : ''}}" data-mode="favorite" bindtap="changeFilter"><image class="tb-line-icon" src="/images/tandem/icons/star-primary.png" style="width:26rpx;height:26rpx" mode="aspectFit" aria-hidden="true"/> 共同收藏</button><button class="{{filterMode === 'frequent' ? 'active' : ''}}" data-mode="frequent" bindtap="changeFilter">常做</button></view>
+  <view class="tb-muted tb-filter-hint" wx:if="{{filterMode === 'frequent'}}">按点菜次数排序</view>
   <view class="empty-state" wx:if="{{dishes.length === 0 && !loading}}">
-    <image class="empty-image" src="/images/bba273d65e7e0a3ae9773c36c18acef1.jpg" mode="aspectFit"></image>
+    <image class="empty-image" src="/images/tandem/dog-food.png" mode="aspectFit"></image>
     <text class="empty-title">菜品库空空如也</text>
     <text class="empty-desc">快添加你们喜欢的菜品吧！</text>
     <view class="btn-primary" bindtap="toAddPage">添加第一道菜</view>
@@ -25,8 +28,7 @@
   <view class="dish-grid" wx:if="{{dishes.length > 0}}">
     <view class="dish-card" wx:for="{{filteredDishes}}" wx:key="_id"
           data-id="{{item._id}}" bindtap="toDetailPage" bindlongpress="showDeleteConfirm">
-      <image class="dish-card-image" wx:if="{{!item.imageUrl}}" src="/images/bba273d65e7e0a3ae9773c36c18acef1.jpg" mode="aspectFill"></image>
-      <image class="dish-card-image" wx:if="{{item.imageUrl}}" src="{{item.imageUrl}}" mode="aspectFill"></image>
+      <view class="tb-dish-cover"><image lazy-load class="dish-card-image" src="{{item.imageUrl || '/images/tandem/dish-placeholder.png'}}" mode="aspectFill"/><button class="tb-favorite tb-card-favorite {{item.favorite ? 'is-favorite' : ''}}" data-id="{{item._id}}" catchtap="toggleFavorite" aria-label="{{item.favorite ? '取消收藏' : '收藏菜品'}}"><image class="tb-line-icon" src="/images/tandem/icons/{{item.favorite ? 'star-filled' : 'star'}}-{{item.favorite ? 'primary' : 'muted'}}.png" style="width:32rpx;height:32rpx" mode="aspectFit" aria-hidden="true"/></button></view>
       <view class="dish-card-info">
         <text class="dish-card-name">{{item.name}}</text>
         <text class="dish-card-time">{{item.createTimeText}}</text>
@@ -36,13 +38,15 @@
 
   <!-- 无搜索结果 -->
   <view class="no-result" wx:if="{{dishes.length > 0 && filteredDishes.length === 0}}">
-    <text class="no-result-text">没有找到"{{search}}"相关的菜品</text>
+    <text class="no-result-text">{{filterMode === 'favorite' ? '共同收藏还空着，点亮喜欢菜品的星星吧。' : (filterMode === 'frequent' ? '点过的菜会在这里积攒。' : '没有找到匹配的菜品')}}</text>
   </view>
 
   <!-- 悬浮添加按钮 -->
-  <view class="fab" bindtap="toAddPage">
+  <view class="fab" wx:if="{{!readOnly}}" bindtap="toAddPage">
     <text class="fab-text">+</text>
   </view>
 </view>
 
 <bind-guard />
+
+<include src="../../templates/feedback.wxml"/>

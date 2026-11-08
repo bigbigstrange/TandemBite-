@@ -1,4 +1,5 @@
-<view class="container">
+<view class="container tb-unified tb-screen-DishAdd">
+  <view class="tb-draft-banner" wx:if="{{draftMessage}}"><text>{{draftMessage}}</text><view class="tb-actions"><button wx:if="{{draftBlocked}}" class="tb-text-btn" bindtap="viewDraft">查看旧草稿</button><button class="tb-text-btn" bindtap="discardDraft">{{draftBlocked ? '放弃旧草稿' : '清除草稿'}}</button></view></view>
   <!-- 页面头部 -->
   <view class="page-header">
     <text class="page-title">{{isEdit ? '编辑菜品' : '添加菜品'}}</text>
@@ -11,23 +12,25 @@
     <view class="upload-card {{imageUrl ? 'has-image' : ''}}" bindtap="chooseImage">
       <image wx:if="{{imageUrl}}" class="preview-image" src="{{imageUrl}}" mode="widthFix"></image>
       <view wx:else class="upload-placeholder">
-        <text class="upload-icon">📷</text>
+        <view class="upload-icon"><image class="tb-line-icon" src="/images/tandem/icons/camera-primary.png" style="width:58rpx;height:58rpx" mode="aspectFit" aria-hidden="true"/></view>
         <text class="upload-text">点击上传菜品图片</text>
-        <text class="upload-hint">支持从相册选择或拍照</text>
+        <text class="upload-hint">拍照或从相册选择，保留完整照片</text>
       </view>
       <!-- 清空图片：有图时显示在右上角 -->
       <view class="clear-image-btn" wx:if="{{imageUrl}}" catchtap="clearImage">
         <text>×</text>
       </view>
+      <view wx:if="{{imageUrl}}" class="photo-replace-label">点击照片更换 · 保存菜品后生效</view>
     </view>
 
     <!-- 菜品名称 -->
+    <view class="tb-photo-actions" wx:if="{{imageUrl}}"><button class="tb-text-btn" bindtap="previewPhoto">查看大图</button></view>
     <view class="input-card">
       <view class="input-label">
-        <text class="label-icon">🍽️</text>
+        <view class="label-icon"><image class="tb-line-icon" src="/images/tandem/icons/utensils-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
         <text class="label-text">菜品名称</text>
       </view>
-      <input class="input-field" placeholder="给这道菜起个名字吧"
+      <input disabled="{{draftBlocked || saving}}" class="input-field" placeholder="给这道菜起个名字吧"
              placeholderClass="input-placeholder"
              bindinput="onNameInput" value="{{name}}" />
       <text class="input-counter">{{name.length}}/20</text>
@@ -36,12 +39,12 @@
     <!-- 菜品分类 -->
     <view class="input-card">
       <view class="input-label">
-        <text class="label-icon">📂</text>
+        <view class="label-icon"><image class="tb-line-icon" src="/images/tandem/icons/folder-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
         <text class="label-text">菜品分类</text>
       </view>
-      <picker mode="selector" range="{{categories}}" range-key="name" value="{{categoryIndex}}" bindchange="onCategoryChange">
+      <picker disabled="{{draftBlocked || saving}}" mode="selector" range="{{categories}}" range-key="name" value="{{categoryIndex}}" bindchange="onCategoryChange">
         <view class="picker-value">
-          <text>{{categories[categoryIndex].icon}} {{categories[categoryIndex].name}}</text>
+          <text>{{categoryIndex >= 0 ? categories[categoryIndex].icon : ''}} {{categoryIndex >= 0 ? categories[categoryIndex].name : '请选择分类'}}</text>
           <text class="picker-arrow">›</text>
         </view>
       </picker>
@@ -50,11 +53,11 @@
     <!-- 菜品描述 -->
     <view class="input-card">
       <view class="input-label">
-        <text class="label-icon">💬</text>
+        <view class="label-icon"><image class="tb-line-icon" src="/images/tandem/icons/message-circle-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
         <text class="label-text">一句话描述</text>
         <text class="label-optional">（选填，最多6字）</text>
       </view>
-      <input class="input-field" placeholder="例如：超下饭"
+      <input disabled="{{draftBlocked || saving}}" class="input-field" placeholder="例如：超下饭"
              placeholderClass="input-placeholder"
              bindinput="onDescInput" value="{{description}}" />
       <text class="input-counter">{{description.length}}/6</text>
@@ -63,18 +66,18 @@
     <!-- 菜谱（合到一张卡，跟其他字段卡片一致） -->
     <view class="input-card">
       <view class="input-label">
-        <text class="label-icon">📖</text>
+        <view class="label-icon"><image class="tb-line-icon" src="/images/tandem/icons/book-open-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
         <text class="label-text">菜谱</text>
         <text class="label-optional">（选填）</text>
       </view>
 
       <view class="recipe-subfield">
         <view class="subfield-label">
-          <text class="subfield-icon">🥬</text>
+          <view class="subfield-icon"><image class="tb-line-icon" src="/images/tandem/icons/leaf-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
           <text class="subfield-text">食材</text>
           <text class="subfield-hint">每行一项</text>
         </view>
-        <textarea class="recipe-textarea" placeholder="例如：鸡蛋 2 个、番茄 1 个、生抽 1 勺"
+        <textarea disabled="{{draftBlocked || saving}}" class="recipe-textarea" placeholder="例如：鸡蛋 2 个、番茄 1 个、生抽 1 勺"
                   placeholder-class="input-placeholder"
                   style="height: {{ingredientsHeight}}rpx"
                   bindinput="onIngredientsInput" value="{{ingredients}}"
@@ -83,11 +86,11 @@
 
       <view class="recipe-subfield">
         <view class="subfield-label">
-          <text class="subfield-icon">👩‍🍳</text>
+          <view class="subfield-icon"><image class="tb-line-icon" src="/images/tandem/icons/chef-hat-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
           <text class="subfield-text">做法</text>
           <text class="subfield-hint">每行一步</text>
         </view>
-        <textarea class="recipe-textarea" placeholder="例如：1. 番茄切块 2. 鸡蛋打散 3. 油锅炒蛋"
+        <textarea disabled="{{draftBlocked || saving}}" class="recipe-textarea" placeholder="例如：1. 番茄切块 2. 鸡蛋打散 3. 油锅炒蛋"
                   placeholder-class="input-placeholder"
                   style="height: {{stepsHeight}}rpx"
                   bindinput="onStepsInput" value="{{steps}}"
@@ -97,10 +100,10 @@
       <view class="recipe-subfield recipe-inline-row">
         <view class="recipe-inline-field">
           <view class="subfield-label">
-            <text class="subfield-icon">⏱</text>
+            <view class="subfield-icon"><image class="tb-line-icon" src="/images/tandem/icons/clock-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
             <text class="subfield-text">时长</text>
           </view>
-          <picker mode="selector" range="{{cookTimeOptions}}" range-key="label" value="{{cookTimeIndex}}" bindchange="onCookTimeChange">
+          <picker disabled="{{draftBlocked || saving}}" mode="selector" range="{{cookTimeOptions}}" range-key="label" value="{{cookTimeIndex}}" bindchange="onCookTimeChange">
             <view class="picker-value">
               <text>{{cookTime}}</text>
               <text class="picker-arrow">›</text>
@@ -109,10 +112,10 @@
         </view>
         <view class="recipe-inline-field">
           <view class="subfield-label">
-            <text class="subfield-icon">🌶</text>
+            <view class="subfield-icon"><image class="tb-line-icon" src="/images/tandem/icons/flame-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
             <text class="subfield-text">难度</text>
           </view>
-          <picker mode="selector" range="{{difficultyOptions}}" value="{{difficultyIndex}}" bindchange="onDifficultyChange">
+          <picker disabled="{{draftBlocked || saving}}" mode="selector" range="{{difficultyOptions}}" value="{{difficultyIndex}}" bindchange="onDifficultyChange">
             <view class="picker-value">
               <text>{{difficulty}}</text>
               <text class="picker-arrow">›</text>
@@ -126,7 +129,9 @@
   <!-- 底部按钮 -->
   <view class="footer">
     <view class="btn-reset" bindtap="resetForm">重置</view>
-    <view class="btn-save" bindtap="saveDish">{{isEdit ? '保存修改' : '保存菜品'}}</view>
+    <view class="btn-save {{saving || draftBlocked ? 'tb-disabled' : ''}}" bindtap="saveDish">{{saving ? '保存中…' : (isEdit ? '保存修改' : '保存菜品')}}</view>
   </view>
 </view>
 <bind-guard />
+
+<include src="../../templates/feedback.wxml"/>

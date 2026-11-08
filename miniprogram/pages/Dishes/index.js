@@ -1,6 +1,13 @@
 const app = getApp()
+const DishTools = require('../../utils/dish-tools.js')
+const tools = DishTools.create(wx, app)
+const Drafts = require('../../utils/drafts.js')
+const drafts = Drafts.create(wx, app)
 
 Page({
+  goMenu() { wx.redirectTo({ url: '/pages/Order/index' }) },
+  goLibrary() { wx.redirectTo({ url: '/pages/Dishes/index' }) },
+  goMealHistory() { wx.redirectTo({ url: '/pages/OrderHistory/index' }) },
   data: {
     isBound: false,
     dishes: [],
@@ -8,18 +15,22 @@ Page({
     search: '',
     loading: true,
     partnerName: '',
+    filterMode: 'all',
   },
 
-  onShow() {
-    app.setKitchenTitle()
-    this.getPartnerName()
-    this.loadDishes()
+  async onShow() {
+    await this.loadDishes()
   },
+  async onPullDownRefresh() { try { await this.loadDishes(true) } finally { wx.stopPullDownRefresh() } },
+  onPageScroll(e) { this._libraryTop = e.scrollTop },
+  onHide() { this.saveBrowse() },
+  onUnload() { this.saveBrowse() },
+  saveBrowse() { if (this._browseScope === drafts.scope()) drafts.write('library', '', { search: this.data.search, filterMode: this.data.filterMode, scrollTop: this._libraryTop || 0 }) },
 
   // 获取伴侣名字
   async getPartnerName() {
     try {
-      const res = await wx.cloud.callFunction({ name: 'getOpenId' })
+      const res = await app.callFunction({ name: 'getOpenId' })
       const openid = res.result?.openid || ''
       const partnerName = app.getPartnerName(openid)
       this.setData({ partnerName })
@@ -29,23 +40,16 @@ Page({
   },
 
   // 加载菜品列表
-  async loadDishes() {
+  async loadDishes(force = false) {
     this.setData({ loading: true })
     try {
-      const res = await wx.cloud.callFunction({
-        name: 'getCoupleData',
-        data: {
-          collection: app.globalData.collectionDishList,
-          orderBy: 'createTime',
-          order: 'desc',
-          limit: 100
-        }
-      })
-      if (!res.result?.success) {
-        throw new Error(res.result?.message || '加载失败')
-      }
-
-      let dishes = res.result.data.map(item => ({
+      const result = await app.getView('menu', {}, force)
+      const saved = drafts.read('library', '') || {}
+      this._browseScope = drafts.scope()
+      this.setData({ search: saved.search || '', filterMode: saved.filterMode || 'all' })
+      app.setKitchenTitle()
+      this.setData({ partnerName: app.getPartnerName(), isBound: app.isBound(), readOnly: app.isKitchenReadOnly() })
+      let dishes = result.dishes.map(item => ({
         ...item,
         createTimeText: this.formatDate(item.createTime)
       }))
@@ -55,6 +59,9 @@ Page({
         dishes,
         filteredDishes: dishes,
         loading: false
+      })
+      this.filterDishes(() => {
+        if (!force && saved.scrollTop) wx.pageScrollTo?.({ scrollTop: saved.scrollTop, duration: 0 })
       })
     } catch (e) {
       console.error('加载菜品失败', e)
@@ -68,19 +75,20 @@ Page({
     const search = e.detail.value.trim()
     this.setData({ search })
     this.filterDishes()
+    this.saveBrowse()
   },
 
   // 过滤菜品
-  filterDishes() {
+  filterDishes(callback) {
     const { dishes, search } = this.data
-    if (!search) {
-      this.setData({ filteredDishes: dishes })
-      return
-    }
-    const filtered = dishes.filter(item =>
-      item.name.toLowerCase().includes(search.toLowerCase())
-    )
-    this.setData({ filteredDishes: filtered })
+    const filtered = tools.filter(dishes, search, this.data.filterMode)
+    if (this.data.filterMode === 'all') filtered.sort((a, b) => Number(!!b.favorite) - Number(!!a.favorite))
+    this.setData({ filteredDishes: filtered }, callback)
+  },
+  changeFilter(e) { this.setData({ filterMode: e.currentTarget.dataset.mode }); this.filterDishes(); this.saveBrowse() },
+  async toggleFavorite(e) {
+    try { await tools.favorite(this, e.currentTarget.dataset.id, this.data.dishes); this.filterDishes() }
+    catch (e) { wx.showToast({ title: e.message || '收藏未保存', icon: 'none' }) }
   },
 
   // 跳转到添加页
@@ -117,7 +125,7 @@ Page({
   async deleteDish(id) {
     wx.showLoading({ title: '删除中...', mask: true })
     try {
-      const res = await wx.cloud.callFunction({
+      const res = await app.callFunction({
         name: 'updateCoupleData',
         data: {
           collection: app.globalData.collectionDishList,

@@ -7,7 +7,7 @@
 /* 页面头部 */
 .page-header {
   padding: 40rpx 30rpx;
-  background: linear-gradient(135deg, #6FCF97 0%, #B8E6C1 100%);
+  background: linear-gradient(135deg, #637556 0%, #E7EAD6 100%);
 }
 
 .page-title {
@@ -76,7 +76,7 @@
   justify-content: center;
   padding: 24rpx 40rpx;
   background: #FAFAFA;
-  border: 4rpx dashed #E8F5E9;
+  border: 4rpx dashed #E7EAD6;
   box-sizing: border-box;
 }
 
@@ -140,7 +140,7 @@
   font-size: 32rpx;
   color: #333;
   padding: 20rpx 0;
-  border-bottom: 2rpx solid #E8F5E9;
+  border-bottom: 2rpx solid #E7EAD6;
 }
 
 .input-placeholder {
@@ -218,7 +218,7 @@
   padding: 20rpx 0;
   font-size: 32rpx;
   color: #333;
-  border-bottom: 2rpx solid #E8F5E9;
+  border-bottom: 2rpx solid #E7EAD6;
 }
 
 .picker-arrow {
@@ -256,7 +256,8 @@
   padding: 28rpx;
   font-size: 30rpx;
   color: white;
-  background: linear-gradient(135deg, #6FCF97 0%, #5AC476 100%);
+  background: linear-gradient(135deg, #637556 0%, #536447 100%);
   border-radius: 50rpx;
   font-weight: 500;
 }
+.photo-replace-label{position:absolute;left:0;right:0;bottom:0;background:rgba(65,47,32,.65);color:#FFFDF7;font-size:24rpx;padding:15rpx;text-align:center}.upload-card{position:relative}.page-title{font-family:'TandemCheer','YouYuan',sans-serif}

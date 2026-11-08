@@ -1,30 +1,31 @@
-<view class="container">
+<view class="container tb-unified tb-screen-DishDetail">
   <!-- 菜品图片 -->
-  <view class="dish-image-wrapper">
-    <image class="dish-image" wx:if="{{dish.imageUrl || previewImageUrl}}" src="{{dish.imageUrl || previewImageUrl}}" mode="widthFix"></image>
-    <image class="dish-image" wx:else src="/images/bba273d65e7e0a3ae9773c36c18acef1.jpg" mode="widthFix"></image>
+  <view class="dish-image-wrapper" bindtap="previewPhoto">
+    <image lazy-load class="dish-image" wx:if="{{dish.imageUrl || previewImageUrl}}" src="{{dish.imageUrl || previewImageUrl}}" mode="widthFix"></image>
+    <image lazy-load class="dish-image" wx:else src="/images/tandem/dish-placeholder.png" mode="widthFix"></image>
   </view>
 
   <!-- 菜品信息卡片 -->
   <view class="dish-info-card">
     <view class="dish-name">{{dish.name}}</view>
+    <button class="tb-btn tb-btn-light" bindtap="toggleFavorite"><image class="tb-line-icon" src="/images/tandem/icons/{{dish.favorite ? 'star-filled' : 'star'}}-primary.png" style="width:31rpx;height:31rpx" mode="aspectFit" aria-hidden="true"/> {{dish.favorite ? '已加入共同收藏' : '收藏这道菜'}}</button>
 
     <view class="info-row">
-      <text class="info-icon">👤</text>
+      <view class="info-icon"><image class="tb-line-icon" src="/images/tandem/icons/user-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
       <text class="info-label">添加者</text>
       <text class="info-value">{{creatorName}}</text>
     </view>
 
     <view class="info-row">
-      <text class="info-icon">📅</text>
+      <view class="info-icon"><image class="tb-line-icon" src="/images/tandem/icons/calendar-days-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
       <text class="info-label">添加时间</text>
       <text class="info-value">{{dateText}}</text>
     </view>
 
-    <view class="info-row" wx:if="{{dish.desc}}">
-      <text class="info-icon">📝</text>
+    <view class="info-row" wx:if="{{dish.description || dish.desc}}">
+      <view class="info-icon"><image class="tb-line-icon" src="/images/tandem/icons/notebook-pen-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
       <text class="info-label">备注</text>
-      <text class="info-value">{{dish.desc}}</text>
+      <text class="info-value">{{dish.description || dish.desc}}</text>
     </view>
   </view>
 
@@ -34,7 +35,7 @@
       <view class="recipe-title-wrap">
         <text class="recipe-title">菜谱</text>
       </view>
-      <view class="recipe-edit-chip" bindtap="editRecipeManual">
+      <view class="recipe-edit-chip" wx:if="{{!readOnly}}" bindtap="editRecipeManual">
         <text>✏️ 编辑</text>
       </view>
     </view>
@@ -63,11 +64,11 @@
       </view>
     </view>
     <view class="empty-body">
-      <text class="empty-icon">📝</text>
+      <view class="empty-icon"><image class="tb-line-icon" src="/images/tandem/icons/notebook-pen-primary.png" style="width:34rpx;height:34rpx" mode="aspectFit" aria-hidden="true"/></view>
       <text class="empty-title">还没有菜谱</text>
       <text class="empty-hint">写一份做法，下次做更方便</text>
     </view>
-    <view class="empty-actions">
+    <view class="empty-actions" wx:if="{{!readOnly}}">
       <view class="empty-action" bindtap="editRecipeManual">
         <text>写菜谱</text>
       </view>
@@ -75,7 +76,7 @@
   </view>
 
   <!-- 操作按钮 -->
-  <view class="action-buttons">
+  <view class="action-buttons" wx:if="{{!readOnly}}">
     <view class="btn-edit" bindtap="editDish">
       <text>编辑菜品</text>
     </view>
@@ -85,3 +86,5 @@
   </view>
 </view>
 <bind-guard />
+
+<include src="../../templates/feedback.wxml"/>

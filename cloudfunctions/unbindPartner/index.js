@@ -20,6 +20,7 @@ exports.main = async (event, context) => {
     }
 
     const currentUser = currentUserRes.data
+    if (currentUser.pendingTransitionId || currentUser.schemaVersion === 3) return { success: false, message: '请使用伴食2.1.0解绑，以保留完整副本' }
 
     // 检查是否已绑定
     if (currentUser.bindStatus !== 'bound' || !currentUser.partnerId) {
