@@ -10,6 +10,26 @@
   <a href="README.en-US.md"><img src="https://img.shields.io/badge/lang-English-blue" alt="English"></a>
 </p>
 
+## 界面预览
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/01-home.png" width="200" alt="首页"><br><b>首页</b><br>今日餐单与本月花费一览</td>
+    <td align="center"><img src="docs/screenshots/02-kitchen.png" width="200" alt="小厨房"><br><b>小厨房</b><br>两个人的菜谱抽屉</td>
+    <td align="center"><img src="docs/screenshots/03-order.png" width="200" alt="点菜"><br><b>点菜</b><br>分类选菜、一键存餐单</td>
+    <td align="center"><img src="docs/screenshots/04-dishes.png" width="200" alt="菜品库"><br><b>菜品库</b><br>搜索、收藏与常做排序</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/05-ledger.png" width="200" alt="生活账本"><br><b>生活账本</b><br>收支明细与筛选</td>
+    <td align="center"><img src="docs/screenshots/06-ledger-stats.png" width="200" alt="分类统计"><br><b>分类统计</b><br>环形图看钱花在哪</td>
+    <td align="center"><img src="docs/screenshots/07-history.png" width="200" alt="点菜历史"><br><b>点菜历史</b><br>按日期回看每一餐</td>
+    <td align="center"><img src="docs/screenshots/08-dish-add.png" width="200" alt="添加菜品"><br><b>添加菜品</b><br>照片、分类与描述</td>
+  </tr>
+</table>
+
+> 以上均为 2.3.1 奶油手账主题的真实运行截图（微信开发者工具「iPhone 12/13 Pro」模拟器，390×844）。
+> 截图中的菜品与金额来自开发账号的演示数据。
+
 ## 功能概览
 
 **核心功能（继承自上游 PairBite）**
@@ -157,7 +177,8 @@ node --test tests/*.test.cjs
 | [docs/TandemBite-手机使用与更新.md](docs/TandemBite-手机使用与更新.md) | 手机端日常使用、账本筛选、版本更新与两台手机验收 |
 | [docs/TandemBite-开发说明.md](docs/TandemBite-开发说明.md) | 架构、数据模型、账本事务、性能优化与部署边界 |
 | [docs/TandemBite-本次验证记录.md](docs/TandemBite-本次验证记录.md) | 各版本自动化检查与真机验收记录 |
-| [docs/images](docs/images) | 界面截图（含上游版本） |
+| [docs/screenshots](docs/screenshots) | 2.3.1 各功能页面截图（README 顶部展示） |
+| [docs/images](docs/images) | 历史截图与部署引导图（含上游版本界面） |
 
 ## 已知限制
 
